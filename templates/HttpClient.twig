@@ -5,10 +5,14 @@ namespace Anteris\Autotask;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
 
+/**
+ * A minimalist client for interacting with the Autotask API. This client sets
+ * authentication headers for Guzzle and adds a wrapper for basic http requests.
+ */
 class HttpClient
 {
     /** @var The client used to make HTTP requests. */
-    protected $client;
+    protected GuzzleClient $client;
 
     /**
      * Creates a new HTTP client with headers to authenticate with Autotask.
@@ -73,7 +77,7 @@ class HttpClient
      */
     public function patch(string $endpoint, array $payload) : Response
     {
-        $this->client->patch($endpoint, [
+        return $this->client->patch($endpoint, [
             'json'  => $payload,
         ]);
     }
@@ -103,7 +107,7 @@ class HttpClient
      */
     public function put(string $endpoint, array $payload) : Response
     {
-        $this->client->put($endpoint, [
+        return $this->client->put($endpoint, [
             'json'  => $payload,
         ]);
     }
@@ -115,8 +119,8 @@ class HttpClient
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function delete(string $endpoint) : void
+    public function delete(string $endpoint) : Response
     {
-        $this->client->delete($endpoint);
+        return $this->client->delete($endpoint);
     }
 }
