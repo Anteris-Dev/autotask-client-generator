@@ -1,0 +1,24 @@
+{
+    "name": "anteris-dev/autotask-client-generator",
+    "description": "This package is the brains behind the Autotask API client. It generates each service class using the Autotask API as its guide.",
+    "require": {
+        "symfony/console": "^5.1",
+        "twig/twig": "^3.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "illuminate/support": "^7.25",
+        "spatie/data-transfer-object": "^2.2",
+        "phpoption/phpoption": "^1.7",
+        "vlucas/phpdotenv": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Anteris\\Autotask\\Generator\\": "./src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aidan Casey",
+            "email": "aidan.casey@anteris.com"
+        }
+    ]
+}

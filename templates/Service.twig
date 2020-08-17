@@ -1,0 +1,90 @@
+<?php
+
+namespace Anteris\Autotask\API\{{ endpoint.plural }};
+
+use Anteris\Autotask\HttpClient;
+
+/**
+ * Handles all interaction with Autotask {{ endpoint.plural }}.
+ * @see https://ww14.autotask.net/help/DeveloperHelp/Content/AdminSetup/2ExtensionsIntegrations/APIs/REST/Entities/{{ endpoint.plural }}Entity.htm Autotask documentation.
+ */
+class {{ endpoint.singular }}Service
+{
+    /** @var Client An HTTP client for making requests to the Autotask API. */
+    protected HttpClient $client;
+
+    public function __construct(HttpClient $client)
+    {
+        $this->client = $client;
+    }
+
+{% if resource.canBeCreated %}
+    /**
+     * Creates a new {{ endpoint.singular|lower }}.
+     *
+     * @param  {{ endpoint.singular }}Entity  $resource  The {{ endpoint.singular|lower }} entity to be written.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function create({{ endpoint.singular }}Entity $resource)
+    {
+        $this->client->post("{{ endpoint.plural }}", $resource->toArray());
+    }
+{% endif %}
+
+{% if resource.canBeDeleted %}
+    /**
+     * Deletes an entity by its ID.
+     *
+     * @param  int  $id  ID of the {{ endpoint.singular }} to be deleted.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function deleteById(int $id): void
+    {
+        $this->client->delete("{{ endpoint.plural }}/$id");
+    }
+{% endif %}
+
+{% if resource.canBeQueried %}
+    /**
+     * Finds the {{ endpoint.singular }} based on its ID.
+     *
+     * @param  string $id  ID of the entity to be retrieved.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function findById(int $id): {{ endpoint.singular }}Entity
+    {
+        return {{ endpoint.singular }}Entity::fromResponse(
+            $this->client->get("{{ endpoint.plural }}/$id")
+        );
+    }
+
+    /**
+     * Returns an instance of the query builder for this entity.
+     *
+     * @see {{ endpoint.singular }}QueryBuilder The query builder class.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function query(): {{ endpoint.singular }}QueryBuilder
+    {
+        return new {{ endpoint.singular }}QueryBuilder($this->client);
+    }
+{% endif %}
+
+{% if resource.canBeUpdated %}
+    /**
+     * Updates the {{ endpoint.singular|lower }}.
+     *
+     * @param  {{ endpoint.singular }}Entity  $resource  The {{ endpoint.singular|lower }} entity to be updated.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function update({{ endpoint.singular }}Entity $resource): void
+    {
+        $this->client->put("{{ endpoint.plural }}/$resource->id", $resource->toArray());
+    }
+{% endif %}
+}

@@ -1,0 +1,47 @@
+<?php
+
+namespace Anteris\Autotask\API\{{ endpoint.plural }};
+
+{%~ for import in imports|sort %}
+use {{ import }};
+{%~ endfor %}
+
+/**
+ * Represents {{ endpoint.singular }} entities.
+ */
+class {{ endpoint.singular }}Entity extends DataTransferObject
+{
+{% for field in fields %}
+    public {% if field.required != true -%}?{%- endif -%}{{- field.type }} ${{ field.name -}};
+{%~ endfor %}
+    public array $userDefinedFields = [];
+
+    public function __construct(array $array)
+    {
+{%- for field in fields %}
+    {%- if field.type == 'Carbon' ~%}
+        $array['{{- field.name -}}'] = new Carbon($array['{{- field.name -}}']);
+    {%- else -%}
+    {% endif -%}
+{% endfor ~%}
+        parent::__construct($array);
+    }
+
+    /**
+     * Creates an instance of this class from an Http response.
+     *
+     * @param  Response  $response  Http response.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public static function fromResponse(Response $response)
+    {
+        $responseArray = json_decode($response->getBody(), true);
+
+        if (isset($responseArray['item']) === false) {
+            throw new \Exception('Missing item key in response.');
+        }
+
+        return new self($responseArray['item']);
+    }
+}

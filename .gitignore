@@ -1,0 +1,3 @@
+.phpdoc/
+vendor/
+.env
