@@ -15,6 +15,9 @@
             "Anteris\\Autotask\\Generator\\": "./src"
         }
     },
+    "bin": [
+        "bin/autotask"
+    ],
     "authors": [
         {
             "name": "Aidan Casey",
