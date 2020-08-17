@@ -1,6 +1,9 @@
 # About this Package
 This package is the brains behind the Autotask API client. It generates each service class using the Autotask API as its guide.
 
+## To Install
+Run `composer require --dev anteris-dev/autotask-client-generator`
+
 # Commands
 This package provides command line commands. These are listed below.
 
