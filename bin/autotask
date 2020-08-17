@@ -1,30 +1,24 @@
+#!/usr/bin/env php
 <?php
 
 // Load the composer autoload
-foreach([__DIR__ . '/../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
+foreach([__DIR__ . '/../../../autoload.php', __DIR__ . '/../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
     if (file_exists($file)) {
-        require_once $file;
-        break;
+        require $file;
     }
 }
-
-use Anteris\Autotask\Generator\Command\MakeDefaultsCommand;
-use Anteris\Autotask\Generator\Command\MakeEndpointCommand;
-use Anteris\Autotask\Generator\Command\MakeSupportFilesCommand;
-use Dotenv\Dotenv;
-use Symfony\Component\Console\Application;
 
 putenv('AUTOTASK_GENERATOR_DIRECTORY='.getcwd());
 
 // Load the environment variables
 if (file_exists(getenv('AUTOTASK_GENERATOR_DIRECTORY') . '/.env')) {
-    $dotenv = Dotenv::createImmutable(getenv('AUTOTASK_GENERATOR_DIRECTORY'));
+    $dotenv = Dotenv\Dotenv::createImmutable(getenv('AUTOTASK_GENERATOR_DIRECTORY'));
     $dotenv->load();
 }
 
 // Setup our console app
-$application = new Application();
-$application->add( new MakeSupportFilesCommand() );
-$application->add( new MakeEndpointCommand() );
-$application->add( new MakeDefaultsCommand() );
+$application = new Symfony\Component\Console\Application();
+$application->add( new Anteris\Autotask\Generator\Command\MakeEndpointCommand() );
+$application->add( new Anteris\Autotask\Generator\Command\MakeDefaultsCommand() );
+$application->add( new Anteris\Autotask\Generator\Command\MakeSupportFilesCommand() );
 $application->run();
