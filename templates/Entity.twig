@@ -16,12 +16,20 @@ class {{ endpoint.singular }}Entity extends DataTransferObject
 {%~ endfor %}
     public array $userDefinedFields = [];
 
+    /**
+     * Creates a new {{ endpoint.singular }} entity.
+     * If this entity has dates, they will be cast as Carbon objects.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
     public function __construct(array $array)
     {
-{%- for field in fields %}
-    {%- if field.type == 'Carbon' ~%}
-        $array['{{- field.name -}}'] = new Carbon($array['{{- field.name -}}']);
-    {%- else -%}
+{%- for field in fields -%}
+    {%~ if field.type == 'Carbon' ~%}
+        if (isset($array['{{- field.name -}}'])) {
+            $array['{{- field.name -}}'] = new Carbon($array['{{- field.name -}}']);
+        }
+    {%~ else -%}
     {% endif -%}
 {% endfor ~%}
         parent::__construct($array);
