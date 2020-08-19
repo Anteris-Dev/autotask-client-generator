@@ -35,4 +35,14 @@ class File
     {
         return $endpoint->singular . "Service.php";
     }
+
+    public static function serviceTestFilename(EndpointDataTransferObject $endpoint)
+    {
+        return $endpoint->singular . "ServiceTest.php";
+    }
+
+    public static function testDirectory(EndpointDataTransferObject $endpoint)
+    {
+        return 'API/' . $endpoint->plural;
+    }
 }

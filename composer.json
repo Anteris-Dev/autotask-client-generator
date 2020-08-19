@@ -12,7 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Anteris\\Autotask\\Generator\\": "./src"
+            "Anteris\\Autotask\\Generator\\": "./src",
+            "Anteris\\Autotask\\": "./toost"
         }
     },
     "bin": [

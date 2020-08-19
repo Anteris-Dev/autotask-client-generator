@@ -256,6 +256,11 @@ Search.appendIndex(
             "summary": "",
             "url": "../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_serviceImports"
         },                {
+            "fqsen": "\\Anteris\\Autotask\\Generator\\EndpointGenerator\u003A\u003A\u0024weirdEndpoints",
+            "name": "weirdEndpoints",
+            "summary": "",
+            "url": "../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_weirdEndpoints"
+        },                {
             "fqsen": "\\Anteris\\Autotask\\Generator\\EndpointGenerator\u003A\u003A\u0024weirdWords",
             "name": "weirdWords",
             "summary": "",
@@ -340,6 +345,16 @@ Search.appendIndex(
             "name": "serviceFilename",
             "summary": "",
             "url": "../classes/Anteris-Autotask-Generator-Helper-File.html#method_serviceFilename"
+        },                {
+            "fqsen": "\\Anteris\\Autotask\\Generator\\Helper\\File\u003A\u003AserviceTestFilename\u0028\u0029",
+            "name": "serviceTestFilename",
+            "summary": "",
+            "url": "../classes/Anteris-Autotask-Generator-Helper-File.html#method_serviceTestFilename"
+        },                {
+            "fqsen": "\\Anteris\\Autotask\\Generator\\Helper\\File\u003A\u003AtestDirectory\u0028\u0029",
+            "name": "testDirectory",
+            "summary": "",
+            "url": "../classes/Anteris-Autotask-Generator-Helper-File.html#method_testDirectory"
         },                {
             "fqsen": "\\Anteris\\Autotask\\Generator\\Helper\\Str",
             "name": "Str",

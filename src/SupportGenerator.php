@@ -59,6 +59,11 @@ class SupportGenerator extends AbstractFileWriter
             'services' => $services
         ]);
 
+        // $this->writeTemplate('ClientTest.twig', 'ClientTest.php', [
+        //     'services' => $services
+        // ]);
+        // $this->writeTemplate('AbstractTest.twig', 'AbstractTest.php');
+
         $this->writeTemplate('HttpClient.twig', 'HttpClient.php');
     }
 

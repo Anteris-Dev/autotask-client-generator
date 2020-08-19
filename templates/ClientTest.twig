@@ -1,0 +1,26 @@
+<?php
+
+namespace Tests;
+
+{%~ for service in services|sort %}
+use Anteris\Autotask\API\{{ service.plural }}\{{ service.singular }}Service;
+{%~ endfor %}
+
+/**
+ * @covers Client
+ */
+class ClientTest extends AbstractTest
+{
+{%- for service in services|sort ~%}
+    /**
+     * @covers Client::{{- service.plural|first|lower }}{{ service.plural|slice(1) }}
+     */
+    public function test{{- service.plural -}}()
+    {
+        $this->assertInstanceOf(
+            {{- service.singular -}}Service::class,
+            $this->client->{{ service.plural|first|lower }}{{ service.plural|slice(1) }}()
+        );
+    }
+{%~ endfor -%}
+}

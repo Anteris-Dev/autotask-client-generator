@@ -3,6 +3,7 @@
 namespace Anteris\Autotask\API\{{ endpoint.plural }};
 
 use Anteris\Autotask\HttpClient;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Handles all interaction with Autotask {{ endpoint.plural }}.
@@ -13,12 +14,18 @@ class {{ endpoint.singular }}Service
     /** @var Client An HTTP client for making requests to the Autotask API. */
     protected HttpClient $client;
 
+    /**
+     * Instantiates the class.
+     *
+     * @param  HttpClient  $client  The http client that will be used to interact with the API.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
     public function __construct(HttpClient $client)
     {
         $this->client = $client;
     }
-
-{% if resource.canBeCreated %}
+{%~ if resource.canBeCreated ~%}
     /**
      * Creates a new {{ endpoint.singular|lower }}.
      *
@@ -26,13 +33,22 @@ class {{ endpoint.singular }}Service
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function create({{ endpoint.singular }}Entity $resource)
+    public function create({{ endpoint.singular }}Entity $resource): Response
     {
-        $this->client->post("{{ endpoint.plural }}", $resource->toArray());
+        {%~ if parentRef %}
+        ${{ parentRef }} = $resource->{{ parentRef }};
+        {%~ endif %}
+        return $this->client->post("
+            {%- if parentPath -%}
+                {{- parentPath | raw -}}
+            {%- else -%}
+                {{- endpoint.plural -}}
+            {%- endif -%}
+            ", $resource->toArray());
     }
-{% endif %}
+{%~ endif -%}
 
-{% if resource.canBeDeleted %}
+{%- if resource.canBeDeleted ~%}
     /**
      * Deletes an entity by its ID.
      *
@@ -40,13 +56,22 @@ class {{ endpoint.singular }}Service
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function deleteById(int $id): void
+    public function deleteById(
+        {%- if parentPath -%}
+            int ${{ parentRef }},
+        {%- endif %} int $id): void
     {
-        $this->client->delete("{{ endpoint.plural }}/$id");
+        $this->client->delete("
+            {%- if parentPath -%}
+                {{- parentPath | raw -}}
+            {%- else -%}
+                {{- endpoint.plural -}}
+            {%- endif -%}
+        /$id");
     }
-{% endif %}
+{%~ endif -%}
 
-{% if resource.canBeQueried %}
+{%- if resource.canBeQueried ~%}
     /**
      * Finds the {{ endpoint.singular }} based on its ID.
      *
@@ -72,9 +97,9 @@ class {{ endpoint.singular }}Service
     {
         return new {{ endpoint.singular }}QueryBuilder($this->client);
     }
-{% endif %}
+{%~ endif -%}
 
-{% if resource.canBeUpdated %}
+{%- if resource.canBeUpdated ~%}
     /**
      * Updates the {{ endpoint.singular|lower }}.
      *
@@ -82,9 +107,18 @@ class {{ endpoint.singular }}Service
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function update({{ endpoint.singular }}Entity $resource): void
+    public function update({{ endpoint.singular }}Entity $resource): Response
     {
-        $this->client->put("{{ endpoint.plural }}/$resource->id", $resource->toArray());
+        {%~ if parentRef %}
+        ${{ parentRef }} = $resource->{{ parentRef }};
+        {%~ endif %}
+        return $this->client->put("
+            {%- if parentPath -%}
+                {{- parentPath | raw -}}
+            {%- else -%}
+                {{- endpoint.plural -}}
+            {%- endif -%}
+        ", $resource->toArray());
     }
-{% endif %}
+{%- endif ~%}
 }

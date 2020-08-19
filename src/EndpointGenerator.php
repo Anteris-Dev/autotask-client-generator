@@ -29,6 +29,78 @@ class EndpointGenerator extends AbstractFileWriter
         'Spatie\\DataTransferObject\\DataTransferObject',
     ];
 
+    /** @var array If the endpoint is nested, we have a hard time handling create / update operations. This helps us with fixing that. */
+    protected array $weirdEndpoints = [
+        'ChecklistLibraryChecklistItems' => [
+            'parentPath' => 'ChecklistLibraries/{{ ref | raw }}/ChecklistItems',
+            'parentRef'  => 'checklistLibraryID',
+        ],
+        'CompanyAlerts' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/Alerts',
+            'parentRef'  => 'companyID',
+        ],
+        'CompanyAttachments' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/Attachments',
+            'parentRef'  => 'parentID',
+        ],
+        'Contacts' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/Contacts',
+            'parentRef'  => 'companyID',
+        ],
+        'CompanyLocations' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/Locations',
+            'parentRef'  => 'companyID',
+        ],
+        'CompanyNotes' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/Notes',
+            'parentRef'  => 'companyID',
+        ],
+        'CompanySiteConfigurations' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/SiteConfigurations',
+            'parentRef'  => 'companyID',
+        ],
+        'CompanyTeams' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/Teams',
+            'parentRef'  => 'companyID',
+        ],
+        'CompanyToDos' => [
+            'parentPath' => 'Companies/{{ ref | raw }}/ToDos',
+            'parentRef'  => 'companyID',
+        ],
+        'CompanyWebhookExcludedResources' => [
+            'parentPath' => 'CompanyWebhooks/{{ ref | raw }}/ExcludedResources',
+            'parentRef'  => 'resourceID',
+        ],
+        'CompanyWebhookFields' => [
+            'parentPath' => 'CompanyWebhooks/{{ ref | raw }}/Fields',
+            'parentRef'  => 'webhookID',
+        ],
+        'CompanyWebhookUdfFields' => [
+            'parentPath' => 'CompanyWebhooks/{{ ref | raw }}/UdfFields',
+            'parentRef'  => 'webhookID',
+        ],
+        'ConfigurationItemBillingProductAssociations' => [
+            'parentPath' => 'ConfigurationItems/{{ ref | raw }}/BillingProductAssociations',
+            'parentRef'  => 'configurationItemID',
+        ],
+        'ConfigurationItemCategoryUdfAssociations' => [
+            'parentPath' => 'ConfigurationItemCategories/{{ ref | raw }}/UdfAssociations',
+            'parentRef'  => 'configurationItemCategoryID',
+        ],
+        'ConfigurationItemNotes' => [
+            'parentPath' => 'ConfigurationItems/{{ ref | raw }}/Notes',
+            'parentRef'  => 'configurationItemID',
+        ],
+        'ContactBillingProductAssociations' => [
+            'parentPath' => 'Contacts/{{ ref | raw }}/BillingProductAssociations',
+            'parentRef'  => 'contactID',
+        ],
+        'ContactGroupContacts' => [
+            'parentPath' => 'ContactGroups/{{ ref | raw }}/Contacts',
+            'parentRef'  => 'contactGroupID',
+        ],
+    ];
+
     /** @var array If the studdly caps being with these weird words we have to manually map to a lowercase version. */
     protected array $weirdWords = [
         'RMM' => 'rmm',
@@ -267,17 +339,42 @@ class EndpointGenerator extends AbstractFileWriter
         ]);
 
         /**
-         * Step 3. Write the information to a file
+         * Step 3. Check if it's a weird endpoint
+         */
+        if (isset($this->weirdEndpoints[$this->endpoint->plural])) {
+            $endpointFix = $this->weirdEndpoints[$this->endpoint->plural]['parentPath'];
+            $endpointRef = $this->weirdEndpoints[$this->endpoint->plural]['parentRef'];
+
+            $template = $this->twig->createTemplate(
+                $endpointFix
+            );
+            $endpointFix = $template->render(['ref' => '$' . $endpointRef]);
+        }
+
+        /**
+         * Step 4. Write the information to a file
          */
         $this->writeTemplate(
             'Service.twig',
             $filename,
             [
-                'endpoint'  => $this->endpoint,
-                'imports'   => $this->serviceImports,
-                'resource'  => $resource,
+                'endpoint'      => $this->endpoint,
+                'imports'       => $this->serviceImports,
+                'parentPath'    => $endpointFix ?? false,
+                'parentRef'     => $endpointRef ?? false,
+                'resource'      => $resource,
             ]
         );
+
+        // $this->setSubDirectory(File::testDirectory($this->endpoint));
+        // $this->writeTemplate(
+        //     'ServiceTest.twig',
+        //     File::serviceTestFilename($this->endpoint),
+        //     [
+        //         'endpoint'  => $this->endpoint,
+        //         'resource'  => $resource
+        //     ]
+        // );
 
         /**
          * Step 4. Kick off other generators if applicable.

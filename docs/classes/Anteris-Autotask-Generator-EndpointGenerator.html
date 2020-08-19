@@ -100,6 +100,11 @@
                     <td class="phpdocumentor-cell">array</td>
                 </tr>
                             <tr>
+                    <th class="phpdocumentor-heading"><a href="../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_weirdEndpoints">$weirdEndpoints</a></th>
+                    <td class="phpdocumentor-cell"></td>
+                    <td class="phpdocumentor-cell">array</td>
+                </tr>
+                            <tr>
                     <th class="phpdocumentor-heading"><a href="../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_weirdWords">$weirdWords</a></th>
                     <td class="phpdocumentor-cell"></td>
                     <td class="phpdocumentor-cell">array</td>
@@ -304,6 +309,25 @@
         <span class="phpdocumentor-signature__name">$serviceImports</span>
          = <span class="phpdocumentor-signature__default-value">[&#039;Spatie\\DataTransferObject\\DataTransferObject&#039;]</span>    </code>
     </article>
+                                    <a id="property_weirdEndpoints"></a>
+<article
+        class="
+            phpdocumentor-property
+            phpdocumentor-property--protected
+                                "
+>
+    <h4 class="phpdocumentor-property__name">$weirdEndpoints</h4>
+    <aside class="phpdocumentor-element-found-in">
+        <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
+        :
+        <span class="phpdocumentor-element-found-in__line">33</span>
+    </aside>
+        <code class="phpdocumentor-signature phpdocumentor-code ">
+        <span class="phpdocumentor-signature__visibility">protected</span>
+                <span class="phpdocumentor-signature__type">array</span>
+        <span class="phpdocumentor-signature__name">$weirdEndpoints</span>
+         = <span class="phpdocumentor-signature__default-value">[&#039;ChecklistLibraryChecklistItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ChecklistLibraries/{{ ref | raw }}/ChecklistItems&#039;, &#039;parentRef&#039; =&gt; &#039;checklistLibraryID&#039;], &#039;CompanyAlerts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Alerts&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyAttachments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Attachments&#039;, &#039;parentRef&#039; =&gt; &#039;parentID&#039;], &#039;Contacts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Contacts&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyLocations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Locations&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanySiteConfigurations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/SiteConfigurations&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyTeams&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Teams&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyToDos&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/ToDos&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyWebhookExcludedResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/ExcludedResources&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;CompanyWebhookFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/Fields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;CompanyWebhookUdfFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/UdfFields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;ConfigurationItemBillingProductAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItems/{{ ref | raw }}/BillingProductAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemID&#039;], &#039;ConfigurationItemCategoryUdfAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItemCategories/{{ ref | raw }}/UdfAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemCategoryID&#039;], &#039;ConfigurationItemNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItems/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemID&#039;], &#039;ContactBillingProductAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contacts/{{ ref | raw }}/BillingProductAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;contactID&#039;], &#039;ContactGroupContacts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContactGroups/{{ ref | raw }}/Contacts&#039;, &#039;parentRef&#039; =&gt; &#039;contactGroupID&#039;]]</span>    </code>
+    </article>
                                     <a id="property_weirdWords"></a>
 <article
         class="
@@ -315,7 +339,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">33</span>
+        <span class="phpdocumentor-element-found-in__line">105</span>
     </aside>
         <code class="phpdocumentor-signature phpdocumentor-code ">
         <span class="phpdocumentor-signature__visibility">protected</span>
@@ -414,7 +438,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">46</span>
+        <span class="phpdocumentor-element-found-in__line">118</span>
     </aside>
         <p class="phpdocumentor-summary">Sets up the class.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -470,7 +494,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">59</span>
+        <span class="phpdocumentor-element-found-in__line">131</span>
     </aside>
         <p class="phpdocumentor-summary">Sets the endpoint we should interact with.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -515,7 +539,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">74</span>
+        <span class="phpdocumentor-element-found-in__line">146</span>
     </aside>
         <p class="phpdocumentor-summary">Creates all the files related to an endpoint.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -548,7 +572,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">90</span>
+        <span class="phpdocumentor-element-found-in__line">162</span>
     </aside>
         <code class="phpdocumentor-signature phpdocumentor-code ">
         <span class="phpdocumentor-signature__visibility">public</span>
@@ -573,7 +597,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">118</span>
+        <span class="phpdocumentor-element-found-in__line">190</span>
     </aside>
         <p class="phpdocumentor-summary">Writes a Data Transfer Object file.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -606,7 +630,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">184</span>
+        <span class="phpdocumentor-element-found-in__line">256</span>
     </aside>
         <p class="phpdocumentor-summary">Creates a paginator class for the endpoint.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -639,7 +663,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">212</span>
+        <span class="phpdocumentor-element-found-in__line">284</span>
     </aside>
         <p class="phpdocumentor-summary">Creates a QueryBuilder class for the endpoint.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -672,7 +696,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">240</span>
+        <span class="phpdocumentor-element-found-in__line">312</span>
     </aside>
         <p class="phpdocumentor-summary">Writes a service file.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -707,7 +731,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">298</span>
+        <span class="phpdocumentor-element-found-in__line">395</span>
     </aside>
         <p class="phpdocumentor-summary">This helper method converts the Autotask type to a PHP type.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
