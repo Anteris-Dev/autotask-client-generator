@@ -52,6 +52,9 @@ class {{ endpoint.singular }}Service
     /**
      * Deletes an entity by its ID.
      *
+{% if parentPath %}
+     * @param  int  ${{ parentRef }}  ID of the {{ endpoint.singular }} parent resource.
+{%~ endif %}
      * @param  int  $id  ID of the {{ endpoint.singular }} to be deleted.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
@@ -59,7 +62,7 @@ class {{ endpoint.singular }}Service
     public function deleteById(
         {%- if parentPath -%}
             int ${{ parentRef }},
-        {%- endif %} int $id): void
+        {%- endif -%} int $id): void
     {
         $this->client->delete("
             {%- if parentPath -%}
