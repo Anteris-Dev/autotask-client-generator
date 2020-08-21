@@ -29,7 +29,10 @@ class EndpointGenerator extends AbstractFileWriter
         'Spatie\\DataTransferObject\\DataTransferObject',
     ];
 
-    /** @var array If the endpoint is nested, we have a hard time handling create / update operations. This helps us with fixing that. */
+    /**
+     * @var  array This lengthy and annoying array helps us define correct create / update routes for pesky nested resources.
+     * @todo Make this less awkward in the code, maybe automatically generated later on.
+     */
     protected array $weirdEndpoints = [
         'ChecklistLibraryChecklistItems' => [
             'parentPath' => 'ChecklistLibraries/{{ ref | raw }}/ChecklistItems',
@@ -98,6 +101,278 @@ class EndpointGenerator extends AbstractFileWriter
         'ContactGroupContacts' => [
             'parentPath' => 'ContactGroups/{{ ref | raw }}/Contacts',
             'parentRef'  => 'contactGroupID',
+        ],
+        'ContactWebhookExcludedResources' => [
+            'parentPath' => 'ContactWebhooks/{{ ref | raw }}/ExcludedResources',
+            'parentRef'  => 'resourceID',
+        ],
+        'ContactWebhookFields' => [
+            'parentPath' => 'ContactWebhooks/{{ ref | raw }}/Fields',
+            'parentRef'  => 'webhookID',
+        ],
+        'ContactWebhookUdfFields' => [
+            'parentPath' => 'ContactWebhooks/{{ ref | raw }}/UdfFields',
+            'parentRef'  => 'webhookID',
+        ],
+        'ContractBillingRules' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/BillingRules',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractBlockHourFactors' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/BlockHourFactors',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractBlocks' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/Blocks',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractCharges' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/Charges',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractExclusionBillingCodes' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/ExclusionBillingCodes',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractExclusionRoles' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/ExclusionRoles',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractExclusionSetExcludedRoles' => [
+            'parentPath' => 'ContractExlusionSets/{{ ref | raw }}/ExcludedRoles',
+            'parentRef'  => 'contractExlusionSetID',
+        ],
+        'ContractExclusionSetExcludedWorkTypes' => [
+            'parentPath' => 'ContractExlusionSets/{{ ref | raw }}/ExcludedWorkTypes',
+            'parentRef'  => 'contractExlusionSetID',
+        ],
+        'ContractMilestones' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/Milestones',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractNotes' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/Notes',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractRates' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/Rates',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractRetainers' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/Retainers',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractRoleCosts' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/RoleCosts',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractServiceAdjustments' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/ServiceAdjustments',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractServiceBundleAdjustments' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/ServiceBundleAdjustments',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractServiceBundles' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/ServiceBundles',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractServiceBundleUnits' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/ServiceBundleUnits',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractServices' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/Services',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractServiceUnits' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/ServiceUnits',
+            'parentRef'  => 'contractID',
+        ],
+        'ContractTicketPurchases' => [
+            'parentPath' => 'Contracts/{{ ref | raw }}/TicketPurchases',
+            'parentRef'  => 'contractID',
+        ],
+        'ExpenseItems' => [
+            'parentPath' => 'Expenses/{{ ref | raw }}/Items',
+            'parentRef'  => 'expenseReportID',
+        ],
+        'Holidays' => [
+            'parentPath' => 'HolidaySets/{{ ref | raw }}/Holidays',
+            'parentRef'  => 'holidaySetID',
+        ],
+        'InventoryItemSerialNumbers' => [
+            'parentPath' => 'InventoryItems/{{ ref | raw }}/SerialNumbers',
+            'parentRef'  => 'inventoryItemID',
+        ],
+        'OpportunityAttachments' => [
+            'parentPath' => 'Opportunities/{{ ref | raw }}/Attachments',
+            'parentRef'  => 'opportunityID',
+        ],
+        'OrganizationalResources' => [
+            'parentPath' => 'OrganizationalLevelAssociations/{{ ref | raw }}/Resources',
+            'parentRef'  => 'organizationalLevelAssociationID',
+        ],
+        'Phases' => [
+            'parentPath' => 'Projects/{{ ref | raw }}/Phases',
+            'parentRef'  => 'projectID',
+        ],
+        'ProductNotes' => [
+            'parentPath' => 'Products/{{ ref | raw }}/Notes',
+            'parentRef'  => 'productID',
+        ],
+        'ProductTiers' => [
+            'parentPath' => 'Products/{{ ref | raw }}/Tiers',
+            'parentRef'  => 'productID',
+        ],
+        'ProductVendors' => [
+            'parentPath' => 'Products/{{ ref | raw }}/Vendors',
+            'parentRef'  => 'productID',
+        ],
+        'ProjectAttachments' => [
+            'parentPath' => 'Projects/{{ ref | raw }}/Attachments',
+            'parentRef'  => 'parentID',
+        ],
+        'ProjectCharges' => [
+            'parentPath' => 'Projects/{{ ref | raw }}/Charges',
+            'parentRef'  => 'projectID',
+        ],
+        'ProjectNotes' => [
+            'parentPath' => 'Projects/{{ ref | raw }}/Notes',
+            'parentRef'  => 'projectID',
+        ],
+        'PurchaseOrderItemReceiving' => [
+            'parentPath' => 'PurchaseOrderItems/{{ ref | raw }}/Receiving',
+            'parentRef'  => 'purchaseOrderItemID',
+        ],
+        'PurchaseOrderItems' => [
+            'parentPath' => 'PurchaseOrders/{{ ref | raw }}/Items',
+            'parentRef'  => 'orderID',
+        ],
+        'QuoteItems' => [
+            'parentPath' => 'Quotes/{{ ref | raw }}/Items',
+            'parentRef'  => 'quoteID',
+        ],
+        'ResourceRoleDepartments' => [
+            'parentPath' => 'Resources/{{ ref | raw }}/RoleDepartments',
+            'parentRef'  => 'resourceID',
+        ],
+        'ResourceRoleQueues' => [
+            'parentPath' => 'Resources/{{ ref | raw }}/RoleQueues',
+            'parentRef'  => 'resourceID',
+        ],
+        'ResourceRoles' => [
+            'parentPath' => 'Resources/{{ ref | raw }}/Roles',
+            'parentRef'  => 'resourceID',
+        ],
+        'ResourceServiceDeskRoles' => [
+            'parentPath' => 'Resources/{{ ref | raw }}/ServiceDeskRoles',
+            'parentRef'  => 'resourceID',
+        ],
+        'ResourceSkills' => [
+            'parentPath' => 'Resources/{{ ref | raw }}/Skills',
+            'parentRef'  => 'resourceID',
+        ],
+        'SalesOrder' => [
+            'parentPath' => 'Opportunities/{{ ref | raw }}/SalesOrders',
+            'parentRef'  => 'opportunityID',
+        ],
+        'ServiceBundleServices' => [
+            'parentPath' => 'ServiceBundles/{{ ref | raw }}/Services',
+            'parentRef'  => 'serviceBundleID',
+        ],
+        'ServiceCallTaskResources' => [
+            'parentPath' => 'ServiceCallTasks/{{ ref | raw }}/Resources',
+            'parentRef'  => 'serviceCallTaskID',
+        ],
+        'ServiceCallTasks' => [
+            'parentPath' => 'ServiceCalls/{{ ref | raw }}/Tasks',
+            'parentRef'  => 'serviceCallID',
+        ],
+        'ServiceCallTicketResources' => [
+            'parentPath' => 'ServiceCallTickets/{{ ref | raw }}/Resources',
+            'parentRef'  => 'serviceCallTicketID',
+        ],
+        'ServiceCallTickets' => [
+            'parentPath' => 'ServiceCalls/{{ ref | raw }}/Tickets',
+            'parentRef'  => 'serviceCallID',
+        ],
+        'ServiceLevelAgreementResults' => [
+            'parentPath' => 'ServiceLevelAgreements/{{ ref | raw }}/Results',
+            'parentRef'  => 'serviceCallTicketID',
+        ],
+        'SubscriptionPeriods' => [
+            'parentPath' => 'Subscriptions/{{ ref | raw }}/Periods',
+            'parentRef'  => 'subscriptionID',
+        ],
+        'TaskAttachments' => [
+            'parentPath' => 'Tasks/{{ ref | raw }}/Attachments',
+            'parentRef'  => 'parentID',
+        ],
+        'TaskNotes' => [
+            'parentPath' => 'Tasks/{{ ref | raw }}/Notes',
+            'parentRef'  => 'taskID',
+        ],
+        'TaskPredecessors' => [
+            'parentPath' => 'Tasks/{{ ref | raw }}/Predecessors',
+            'parentRef'  => 'taskID',
+        ],
+        'Tasks' => [
+            'parentPath' => 'Projects/{{ ref | raw }}/Tasks',
+            'parentRef'  => 'projectID',
+        ],
+        'TaskSecondaryResources' => [
+            'parentPath' => 'Tasks/{{ ref | raw }}/SecondaryResources',
+            'parentRef'  => 'taskID',
+        ],
+        'TicketAdditionalConfigurationItems' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/AdditionalConfigurationItems',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketAdditionalContacts' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/AdditionalContacts',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketAttachments' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/Attachments',
+            'parentRef'  => 'parentID',
+        ],
+        'TicketCategoryFieldDefaults' => [
+            'parentPath' => 'TicketCategories/{{ ref | raw }}/FieldDefaults',
+            'parentRef'  => 'ticketCategoryID',
+        ],
+        'TicketChangeRequestApprovals' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/ChangeRequestApprovals',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketCharges' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/Charges',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketChecklistItems' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/ChecklistItems',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketChecklistLibraries' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/ChecklistLibraries',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketNotes' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/Notes',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketRmaCredits' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/RmaCredits',
+            'parentRef'  => 'ticketID',
+        ],
+        'TicketSecondaryResources' => [
+            'parentPath' => 'Tickets/{{ ref | raw }}/SecondaryResources',
+            'parentRef'  => 'ticketID',
+        ],
+        'UserDefinedFieldListItems' => [
+            'parentPath' => 'UserDefinedFields/{{ ref | raw }}/ListItems',
+            'parentRef'  => 'udfFieldID',
         ],
     ];
 
