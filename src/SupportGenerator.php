@@ -74,8 +74,22 @@ class SupportGenerator extends AbstractFileWriter
      */
     public function makeSupport(): void
     {
+        $this->setSubDirectory('Support/EntityFields');
+        $this->writeTemplate('EntityFieldEntity.twig', 'EntityFieldEntity.php');
+        $this->writeTemplate('EntityFieldCollection.twig', 'EntityFieldCollection.php');
+
+        $this->setSubDirectory('Support/EntityInformation');
+        $this->writeTemplate('EntityInformationEntity.twig', 'EntityInformationEntity.php');
+
+        $this->setSubDirectory('Support/EntityUserDefinedFields');
+        $this->writeTemplate('EntityUserDefinedFieldEntity.twig', 'EntityUserDefinedFieldEntity.php');
+        $this->writeTemplate('EntityUserDefinedFieldCollection.twig', 'EntityUserDefinedFieldCollection.php');
+
         $this->setSubDirectory('Support/Pagination');
         $this->writeTemplate('PageEntity.twig', 'PageEntity.php');
+
+        $this->setSubDirectory('Support/UserDefinedFields');
+        $this->writeTemplate('UserDefinedFieldEntity.twig', 'UserDefinedFieldEntity.php');
 
         // Reset the sub-directory for other methods.
         $this->setSubDirectory('');

@@ -14,7 +14,10 @@ class {{ endpoint.singular }}Entity extends DataTransferObject
 {% for field in fields %}
     public {% if field.required != true -%}?{%- endif -%}{{- field.type }} ${{ field.name -}};
 {%~ endfor %}
-    public array $userDefinedFields = [];
+{%- if resource.hasUserDefinedFields ~%}
+    /** @var \Anteris\Autotask\Support\UserDefinedFields\UserDefinedFieldEntity[] */
+    public array $userDefinedFields;
+{%~ endif %}
 
     /**
      * Creates a new {{ endpoint.singular }} entity.

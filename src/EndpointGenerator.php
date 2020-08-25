@@ -24,6 +24,9 @@ class EndpointGenerator extends AbstractFileWriter
     /** @var array Contains all the imports required for the Data Transfer Object. */
     protected array $dtoImports   = [];
 
+    /** @var EntityInformationDataTransferObject Contains all the information around the entity capabilities. */
+    protected EntityInformationDataTransferObject $resource;
+
     /** @var array Contains all the imports required for the Service Object */
     protected $serviceImports = [
         'Spatie\\DataTransferObject\\DataTransferObject',
@@ -428,6 +431,53 @@ class EndpointGenerator extends AbstractFileWriter
         // $this->setOutputDirectory( $this->outputDirectory );
         $this->setSubDirectory(File::endpointDirectory($this->endpoint));
 
+        // Collect Service information
+        $httpResponse   = $this->client->get($this->endpoint->plural . "/entityInformation");
+        $arrayResponse  = json_decode($httpResponse->getBody(), true);
+
+        if (!isset($arrayResponse['info'])) {
+            throw new Exception('Invalid response from entityInformation!');
+        }
+
+        $this->resource = new EntityInformationDataTransferObject([
+            'canBeCreated' => $arrayResponse['info']['canCreate'],
+            'canBeDeleted' => $arrayResponse['info']['canDelete'],
+            'canBeQueried' => $arrayResponse['info']['canQuery'],
+            'canBeUpdated' => $arrayResponse['info']['canUpdate'],
+            'hasUserDefinedFields' => $arrayResponse['info']['hasUserDefinedFields'],
+        ]);
+
+        // Collect entity information
+        $this->dtoFields    = [];
+        $this->dtoImports   = [
+            'GuzzleHttp\Psr7\Response',
+            'Spatie\DataTransferObject\DataTransferObject',
+        ];
+
+        $httpResponse   = $this->client->get($this->endpoint->plural . "/entityInformation/fields");
+        $arrayResponse  = json_decode($httpResponse->getBody(), true);
+
+        if (!isset($arrayResponse['fields'])) {
+            throw new Exception('Invalid response from entityInformation/fields!');
+        }
+
+        // Now convert all our fields into something we will understand
+        foreach ($arrayResponse['fields'] as $field) {
+            // This handles one-off scenarios where the field begins with an all
+            // uppercase word (e.g. RMM).
+            foreach ($this->weirdWords as $original => $fixed) {
+                if (substr($field['name'], 0, strlen($original)) === $original) {
+                    $field['name'] = Str::replaceFirst($original, $fixed, $field['name']);
+                }
+            }
+
+            $this->dtoFields[] = [
+                'name'      => Str::camel($field['name']),
+                'type'      => $this->mapType($field['dataType']),
+                'required'  => $field['isRequired'],
+            ];
+        }
+
         // Now write the files
         $this->makeCollection();
         $this->makeDataTransferObject();
@@ -465,15 +515,6 @@ class EndpointGenerator extends AbstractFileWriter
     public function makeDataTransferObject(): void
     {
         /**
-         * Step 0. Reset stuff
-         */
-        $this->dtoFields = [];
-        $this->dtoImports = [
-            'GuzzleHttp\Psr7\Response',
-            'Spatie\DataTransferObject\DataTransferObject',
-        ];
-
-        /**
          * Step 1. Check the file
          */
         $filename = File::dataTransferObjectFilename($this->endpoint);
@@ -483,34 +524,7 @@ class EndpointGenerator extends AbstractFileWriter
         }
 
         /**
-         * Step 2. Collect information
-         */
-        $httpResponse   = $this->client->get($this->endpoint->plural . "/entityInformation/fields");
-        $arrayResponse  = json_decode($httpResponse->getBody(), true);
-
-        if (!isset($arrayResponse['fields'])) {
-            throw new Exception('Invalid response from entityInformation/fields!');
-        }
-
-        // Now convert all our fields into something we will understand
-        foreach ($arrayResponse['fields'] as $field) {
-            // This handles one-off scenarios where the field begins with an all
-            // uppercase word (e.g. RMM).
-            foreach ($this->weirdWords as $original => $fixed) {
-                if (substr($field['name'], 0, strlen($original)) === $original) {
-                    $field['name'] = Str::replaceFirst($original, $fixed, $field['name']);
-                }
-            }
-
-            $this->dtoFields[] = [
-                'name'      => Str::camel($field['name']),
-                'type'      => $this->mapType($field['dataType']),
-                'required'  => $field['isRequired'],
-            ];
-        }
-
-        /**
-         * Step 3. Write the information to a file
+         * Step 2. Write the information to a file
          */
         $this->writeTemplate(
             'Entity.twig',
@@ -519,6 +533,7 @@ class EndpointGenerator extends AbstractFileWriter
                 'endpoint'  => $this->endpoint,
                 'fields'    => $this->dtoFields,
                 'imports'   => $this->dtoImports,
+                'resource'  => $this->resource,
             ]
         );
     }
@@ -596,25 +611,7 @@ class EndpointGenerator extends AbstractFileWriter
         }
 
         /**
-         * Step 2. Collect information
-         */
-        $httpResponse   = $this->client->get($this->endpoint->plural . "/entityInformation");
-        $arrayResponse  = json_decode($httpResponse->getBody(), true);
-
-        if (!isset($arrayResponse['info'])) {
-            throw new Exception('Invalid response from entityInformation!');
-        }
-
-        $resource = new EntityInformationDataTransferObject([
-            'canBeCreated' => $arrayResponse['info']['canCreate'],
-            'canBeDeleted' => $arrayResponse['info']['canDelete'],
-            'canBeQueried' => $arrayResponse['info']['canQuery'],
-            'canBeUpdated' => $arrayResponse['info']['canUpdate'],
-            'hasUserDefinedFields' => $arrayResponse['info']['hasUserDefinedFields'],
-        ]);
-
-        /**
-         * Step 3. Check if it's a weird endpoint
+         * Step 2. Check if it's a weird endpoint
          */
         if (isset($this->weirdEndpoints[$this->endpoint->plural])) {
             $endpointFix = $this->weirdEndpoints[$this->endpoint->plural]['parentPath'];
@@ -627,7 +624,7 @@ class EndpointGenerator extends AbstractFileWriter
         }
 
         /**
-         * Step 4. Write the information to a file
+         * Step 3. Write the information to a file
          */
         $this->writeTemplate(
             'Service.twig',
@@ -637,7 +634,7 @@ class EndpointGenerator extends AbstractFileWriter
                 'imports'       => $this->serviceImports,
                 'parentPath'    => $endpointFix ?? false,
                 'parentRef'     => $endpointRef ?? false,
-                'resource'      => $resource,
+                'resource'      => $this->resource,
             ]
         );
 
@@ -654,7 +651,7 @@ class EndpointGenerator extends AbstractFileWriter
         /**
          * Step 4. Kick off other generators if applicable.
          */
-        if ($resource->canBeQueried) {
+        if ($this->resource->canBeQueried) {
             $this->makePaginator();
             $this->makeQueryBuilder();
         }
