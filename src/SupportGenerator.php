@@ -55,7 +55,7 @@ class SupportGenerator extends AbstractFileWriter
         /**
          * Step 2. Write the client files
          */
-        $this->writeTemplate('Client.twig', 'Client.php', [
+        $this->writeTemplate('Package/Client.php.twig', 'Client.php', [
             'services' => $services
         ]);
 
@@ -64,7 +64,7 @@ class SupportGenerator extends AbstractFileWriter
         // ]);
         // $this->writeTemplate('AbstractTest.twig', 'AbstractTest.php');
 
-        $this->writeTemplate('HttpClient.twig', 'HttpClient.php');
+        $this->writeTemplate('Package/HttpClient.php.twig', 'HttpClient.php');
     }
 
     /**
@@ -75,21 +75,42 @@ class SupportGenerator extends AbstractFileWriter
     public function makeSupport(): void
     {
         $this->setSubDirectory('Support/EntityFields');
-        $this->writeTemplate('EntityFieldEntity.twig', 'EntityFieldEntity.php');
-        $this->writeTemplate('EntityFieldCollection.twig', 'EntityFieldCollection.php');
+        $this->writeTemplate(
+            'Package/Support/EntityFields/EntityFieldEntity.php.twig',
+            'EntityFieldEntity.php'
+        );
+        $this->writeTemplate(
+            'Package/Support/EntityFields/EntityFieldCollection.php.twig',
+            'EntityFieldCollection.php'
+        );
 
         $this->setSubDirectory('Support/EntityInformation');
-        $this->writeTemplate('EntityInformationEntity.twig', 'EntityInformationEntity.php');
+        $this->writeTemplate(
+            'Package/Support/EntityInformation/EntityInformationEntity.php.twig',
+            'EntityInformationEntity.php'
+        );
 
         $this->setSubDirectory('Support/EntityUserDefinedFields');
-        $this->writeTemplate('EntityUserDefinedFieldEntity.twig', 'EntityUserDefinedFieldEntity.php');
-        $this->writeTemplate('EntityUserDefinedFieldCollection.twig', 'EntityUserDefinedFieldCollection.php');
+        $this->writeTemplate(
+            'Package/Support/EntityUserDefinedFields/EntityUserDefinedFieldEntity.php.twig',
+            'EntityUserDefinedFieldEntity.php'
+        );
+        $this->writeTemplate(
+            'Package/Support/EntityUserDefinedFields/EntityUserDefinedFieldCollection.php.twig',
+            'EntityUserDefinedFieldCollection.php'
+        );
 
         $this->setSubDirectory('Support/Pagination');
-        $this->writeTemplate('PageEntity.twig', 'PageEntity.php');
+        $this->writeTemplate(
+            'Package/Support/Pagination/PageEntity.php.twig',
+            'PageEntity.php'
+        );
 
         $this->setSubDirectory('Support/UserDefinedFields');
-        $this->writeTemplate('UserDefinedFieldEntity.twig', 'UserDefinedFieldEntity.php');
+        $this->writeTemplate(
+            'Package/Support/UserDefinedFields/UserDefinedFieldEntity.php.twig',
+            'UserDefinedFieldEntity.php'
+        );
 
         // Reset the sub-directory for other methods.
         $this->setSubDirectory('');
