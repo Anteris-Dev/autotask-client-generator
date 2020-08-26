@@ -30,12 +30,12 @@ You may pass the argument `--force` to overwrite existing classes.
 
 # Directory Structure
 
-- bin/ - _Contains the command line logic for the `autotask` command._
-- docs/ - _Contains documentation surrounding this package._
-- src/ - _Contains the generator source code._
-  - Command/ - _Contains any Symfony commands that the `autotask` command supports._
-  - DataTransferObject/ - _Contains any DTOs that are used in handling data during the generator process._
-  - Helper/ - _Contains static function helpers that are used throughout the package._
-- templates/ - _Contains Twig templates for the generated package._
-  - Package/ - _These templates are related to the actual package._
-  - Tests/ - _These templates are related to the package tests._
+- /bin - _Contains the command line logic for the `autotask` command._
+- /docs - _Contains documentation surrounding this package._
+- /src - _Contains the generator source code._
+  - /Command - _Contains any Symfony commands that the `autotask` command supports._
+  - /DataTransferObject - _Contains any DTOs that are used in handling data during the generator process._
+  - /Helper - _Contains static function helpers that are used throughout the package._
+- /templates - _Contains Twig templates for the generated package._
+  - /Package - _These templates are related to the actual package._
+  - /Tests - _These templates are related to the package tests._
