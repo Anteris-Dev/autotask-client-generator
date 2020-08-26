@@ -251,6 +251,11 @@ Search.appendIndex(
             "summary": "",
             "url": "../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_dtoImports"
         },                {
+            "fqsen": "\\Anteris\\Autotask\\Generator\\EndpointGenerator\u003A\u003A\u0024resource",
+            "name": "resource",
+            "summary": "",
+            "url": "../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_resource"
+        },                {
             "fqsen": "\\Anteris\\Autotask\\Generator\\EndpointGenerator\u003A\u003A\u0024serviceImports",
             "name": "serviceImports",
             "summary": "",

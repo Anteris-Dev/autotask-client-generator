@@ -95,6 +95,11 @@
                     <td class="phpdocumentor-cell">array</td>
                 </tr>
                             <tr>
+                    <th class="phpdocumentor-heading"><a href="../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_resource">$resource</a></th>
+                    <td class="phpdocumentor-cell"></td>
+                    <td class="phpdocumentor-cell"><a href="../classes/Anteris-Autotask-Generator-DataTransferObject-EntityInformationDataTransferObject.html"><abbr title="\Anteris\Autotask\Generator\DataTransferObject\EntityInformationDataTransferObject">EntityInformationDataTransferObject</abbr></a></td>
+                </tr>
+                            <tr>
                     <th class="phpdocumentor-heading"><a href="../classes/Anteris-Autotask-Generator-EndpointGenerator.html#property_serviceImports">$serviceImports</a></th>
                     <td class="phpdocumentor-cell"></td>
                     <td class="phpdocumentor-cell">array</td>
@@ -290,6 +295,25 @@
         <span class="phpdocumentor-signature__name">$dtoImports</span>
          = <span class="phpdocumentor-signature__default-value">[]</span>    </code>
     </article>
+                                    <a id="property_resource"></a>
+<article
+        class="
+            phpdocumentor-property
+            phpdocumentor-property--protected
+                                "
+>
+    <h4 class="phpdocumentor-property__name">$resource</h4>
+    <aside class="phpdocumentor-element-found-in">
+        <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
+        :
+        <span class="phpdocumentor-element-found-in__line">28</span>
+    </aside>
+        <code class="phpdocumentor-signature phpdocumentor-code ">
+        <span class="phpdocumentor-signature__visibility">protected</span>
+                <span class="phpdocumentor-signature__type"><a href="../classes/Anteris-Autotask-Generator-DataTransferObject-EntityInformationDataTransferObject.html"><abbr title="\Anteris\Autotask\Generator\DataTransferObject\EntityInformationDataTransferObject">EntityInformationDataTransferObject</abbr></a></span>
+        <span class="phpdocumentor-signature__name">$resource</span>
+            </code>
+    </article>
                                     <a id="property_serviceImports"></a>
 <article
         class="
@@ -301,7 +325,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">28</span>
+        <span class="phpdocumentor-element-found-in__line">31</span>
     </aside>
         <code class="phpdocumentor-signature phpdocumentor-code ">
         <span class="phpdocumentor-signature__visibility">protected</span>
@@ -320,13 +344,13 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">33</span>
+        <span class="phpdocumentor-element-found-in__line">39</span>
     </aside>
         <code class="phpdocumentor-signature phpdocumentor-code ">
         <span class="phpdocumentor-signature__visibility">protected</span>
                 <span class="phpdocumentor-signature__type">array</span>
         <span class="phpdocumentor-signature__name">$weirdEndpoints</span>
-         = <span class="phpdocumentor-signature__default-value">[&#039;ChecklistLibraryChecklistItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ChecklistLibraries/{{ ref | raw }}/ChecklistItems&#039;, &#039;parentRef&#039; =&gt; &#039;checklistLibraryID&#039;], &#039;CompanyAlerts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Alerts&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyAttachments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Attachments&#039;, &#039;parentRef&#039; =&gt; &#039;parentID&#039;], &#039;Contacts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Contacts&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyLocations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Locations&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanySiteConfigurations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/SiteConfigurations&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyTeams&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Teams&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyToDos&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/ToDos&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyWebhookExcludedResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/ExcludedResources&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;CompanyWebhookFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/Fields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;CompanyWebhookUdfFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/UdfFields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;ConfigurationItemBillingProductAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItems/{{ ref | raw }}/BillingProductAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemID&#039;], &#039;ConfigurationItemCategoryUdfAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItemCategories/{{ ref | raw }}/UdfAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemCategoryID&#039;], &#039;ConfigurationItemNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItems/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemID&#039;], &#039;ContactBillingProductAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contacts/{{ ref | raw }}/BillingProductAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;contactID&#039;], &#039;ContactGroupContacts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContactGroups/{{ ref | raw }}/Contacts&#039;, &#039;parentRef&#039; =&gt; &#039;contactGroupID&#039;]]</span>    </code>
+         = <span class="phpdocumentor-signature__default-value">[&#039;ChecklistLibraryChecklistItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ChecklistLibraries/{{ ref | raw }}/ChecklistItems&#039;, &#039;parentRef&#039; =&gt; &#039;checklistLibraryID&#039;], &#039;CompanyAlerts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Alerts&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyAttachments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Attachments&#039;, &#039;parentRef&#039; =&gt; &#039;parentID&#039;], &#039;Contacts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Contacts&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyLocations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Locations&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanySiteConfigurations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/SiteConfigurations&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyTeams&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/Teams&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyToDos&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Companies/{{ ref | raw }}/ToDos&#039;, &#039;parentRef&#039; =&gt; &#039;companyID&#039;], &#039;CompanyWebhookExcludedResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/ExcludedResources&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;CompanyWebhookFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/Fields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;CompanyWebhookUdfFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;CompanyWebhooks/{{ ref | raw }}/UdfFields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;ConfigurationItemBillingProductAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItems/{{ ref | raw }}/BillingProductAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemID&#039;], &#039;ConfigurationItemCategoryUdfAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItemCategories/{{ ref | raw }}/UdfAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemCategoryID&#039;], &#039;ConfigurationItemNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ConfigurationItems/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;configurationItemID&#039;], &#039;ContactBillingProductAssociations&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contacts/{{ ref | raw }}/BillingProductAssociations&#039;, &#039;parentRef&#039; =&gt; &#039;contactID&#039;], &#039;ContactGroupContacts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContactGroups/{{ ref | raw }}/Contacts&#039;, &#039;parentRef&#039; =&gt; &#039;contactGroupID&#039;], &#039;ContactWebhookExcludedResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContactWebhooks/{{ ref | raw }}/ExcludedResources&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;ContactWebhookFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContactWebhooks/{{ ref | raw }}/Fields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;ContactWebhookUdfFields&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContactWebhooks/{{ ref | raw }}/UdfFields&#039;, &#039;parentRef&#039; =&gt; &#039;webhookID&#039;], &#039;ContractBillingRules&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/BillingRules&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractBlockHourFactors&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/BlockHourFactors&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractBlocks&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/Blocks&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractCharges&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/Charges&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractExclusionBillingCodes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/ExclusionBillingCodes&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractExclusionRoles&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/ExclusionRoles&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractExclusionSetExcludedRoles&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContractExlusionSets/{{ ref | raw }}/ExcludedRoles&#039;, &#039;parentRef&#039; =&gt; &#039;contractExlusionSetID&#039;], &#039;ContractExclusionSetExcludedWorkTypes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ContractExlusionSets/{{ ref | raw }}/ExcludedWorkTypes&#039;, &#039;parentRef&#039; =&gt; &#039;contractExlusionSetID&#039;], &#039;ContractMilestones&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/Milestones&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractRates&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/Rates&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractRetainers&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/Retainers&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractRoleCosts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/RoleCosts&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractServiceAdjustments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/ServiceAdjustments&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractServiceBundleAdjustments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/ServiceBundleAdjustments&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractServiceBundles&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/ServiceBundles&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractServiceBundleUnits&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/ServiceBundleUnits&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractServices&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/Services&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractServiceUnits&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/ServiceUnits&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ContractTicketPurchases&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Contracts/{{ ref | raw }}/TicketPurchases&#039;, &#039;parentRef&#039; =&gt; &#039;contractID&#039;], &#039;ExpenseItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Expenses/{{ ref | raw }}/Items&#039;, &#039;parentRef&#039; =&gt; &#039;expenseReportID&#039;], &#039;Holidays&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;HolidaySets/{{ ref | raw }}/Holidays&#039;, &#039;parentRef&#039; =&gt; &#039;holidaySetID&#039;], &#039;InventoryItemSerialNumbers&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;InventoryItems/{{ ref | raw }}/SerialNumbers&#039;, &#039;parentRef&#039; =&gt; &#039;inventoryItemID&#039;], &#039;OpportunityAttachments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Opportunities/{{ ref | raw }}/Attachments&#039;, &#039;parentRef&#039; =&gt; &#039;opportunityID&#039;], &#039;OrganizationalResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;OrganizationalLevelAssociations/{{ ref | raw }}/Resources&#039;, &#039;parentRef&#039; =&gt; &#039;organizationalLevelAssociationID&#039;], &#039;Phases&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Projects/{{ ref | raw }}/Phases&#039;, &#039;parentRef&#039; =&gt; &#039;projectID&#039;], &#039;ProductNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Products/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;productID&#039;], &#039;ProductTiers&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Products/{{ ref | raw }}/Tiers&#039;, &#039;parentRef&#039; =&gt; &#039;productID&#039;], &#039;ProductVendors&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Products/{{ ref | raw }}/Vendors&#039;, &#039;parentRef&#039; =&gt; &#039;productID&#039;], &#039;ProjectAttachments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Projects/{{ ref | raw }}/Attachments&#039;, &#039;parentRef&#039; =&gt; &#039;parentID&#039;], &#039;ProjectCharges&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Projects/{{ ref | raw }}/Charges&#039;, &#039;parentRef&#039; =&gt; &#039;projectID&#039;], &#039;ProjectNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Projects/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;projectID&#039;], &#039;PurchaseOrderItemReceiving&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;PurchaseOrderItems/{{ ref | raw }}/Receiving&#039;, &#039;parentRef&#039; =&gt; &#039;purchaseOrderItemID&#039;], &#039;PurchaseOrderItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;PurchaseOrders/{{ ref | raw }}/Items&#039;, &#039;parentRef&#039; =&gt; &#039;orderID&#039;], &#039;QuoteItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Quotes/{{ ref | raw }}/Items&#039;, &#039;parentRef&#039; =&gt; &#039;quoteID&#039;], &#039;ResourceRoleDepartments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Resources/{{ ref | raw }}/RoleDepartments&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;ResourceRoleQueues&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Resources/{{ ref | raw }}/RoleQueues&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;ResourceRoles&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Resources/{{ ref | raw }}/Roles&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;ResourceServiceDeskRoles&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Resources/{{ ref | raw }}/ServiceDeskRoles&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;ResourceSkills&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Resources/{{ ref | raw }}/Skills&#039;, &#039;parentRef&#039; =&gt; &#039;resourceID&#039;], &#039;SalesOrder&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Opportunities/{{ ref | raw }}/SalesOrders&#039;, &#039;parentRef&#039; =&gt; &#039;opportunityID&#039;], &#039;ServiceBundleServices&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ServiceBundles/{{ ref | raw }}/Services&#039;, &#039;parentRef&#039; =&gt; &#039;serviceBundleID&#039;], &#039;ServiceCallTaskResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ServiceCallTasks/{{ ref | raw }}/Resources&#039;, &#039;parentRef&#039; =&gt; &#039;serviceCallTaskID&#039;], &#039;ServiceCallTasks&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ServiceCalls/{{ ref | raw }}/Tasks&#039;, &#039;parentRef&#039; =&gt; &#039;serviceCallID&#039;], &#039;ServiceCallTicketResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ServiceCallTickets/{{ ref | raw }}/Resources&#039;, &#039;parentRef&#039; =&gt; &#039;serviceCallTicketID&#039;], &#039;ServiceCallTickets&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ServiceCalls/{{ ref | raw }}/Tickets&#039;, &#039;parentRef&#039; =&gt; &#039;serviceCallID&#039;], &#039;ServiceLevelAgreementResults&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;ServiceLevelAgreements/{{ ref | raw }}/Results&#039;, &#039;parentRef&#039; =&gt; &#039;serviceCallTicketID&#039;], &#039;SubscriptionPeriods&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Subscriptions/{{ ref | raw }}/Periods&#039;, &#039;parentRef&#039; =&gt; &#039;subscriptionID&#039;], &#039;TaskAttachments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tasks/{{ ref | raw }}/Attachments&#039;, &#039;parentRef&#039; =&gt; &#039;parentID&#039;], &#039;TaskNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tasks/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;taskID&#039;], &#039;TaskPredecessors&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tasks/{{ ref | raw }}/Predecessors&#039;, &#039;parentRef&#039; =&gt; &#039;taskID&#039;], &#039;Tasks&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Projects/{{ ref | raw }}/Tasks&#039;, &#039;parentRef&#039; =&gt; &#039;projectID&#039;], &#039;TaskSecondaryResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tasks/{{ ref | raw }}/SecondaryResources&#039;, &#039;parentRef&#039; =&gt; &#039;taskID&#039;], &#039;TicketAdditionalConfigurationItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/AdditionalConfigurationItems&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketAdditionalContacts&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/AdditionalContacts&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketAttachments&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/Attachments&#039;, &#039;parentRef&#039; =&gt; &#039;parentID&#039;], &#039;TicketCategoryFieldDefaults&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;TicketCategories/{{ ref | raw }}/FieldDefaults&#039;, &#039;parentRef&#039; =&gt; &#039;ticketCategoryID&#039;], &#039;TicketChangeRequestApprovals&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/ChangeRequestApprovals&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketCharges&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/Charges&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketChecklistItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/ChecklistItems&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketChecklistLibraries&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/ChecklistLibraries&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketNotes&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/Notes&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketRmaCredits&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/RmaCredits&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;TicketSecondaryResources&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;Tickets/{{ ref | raw }}/SecondaryResources&#039;, &#039;parentRef&#039; =&gt; &#039;ticketID&#039;], &#039;UserDefinedFieldListItems&#039; =&gt; [&#039;parentPath&#039; =&gt; &#039;UserDefinedFields/{{ ref | raw }}/ListItems&#039;, &#039;parentRef&#039; =&gt; &#039;udfFieldID&#039;]]</span>    </code>
     </article>
                                     <a id="property_weirdWords"></a>
 <article
@@ -339,7 +363,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">105</span>
+        <span class="phpdocumentor-element-found-in__line">383</span>
     </aside>
         <code class="phpdocumentor-signature phpdocumentor-code ">
         <span class="phpdocumentor-signature__visibility">protected</span>
@@ -438,7 +462,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">118</span>
+        <span class="phpdocumentor-element-found-in__line">396</span>
     </aside>
         <p class="phpdocumentor-summary">Sets up the class.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -494,7 +518,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">131</span>
+        <span class="phpdocumentor-element-found-in__line">409</span>
     </aside>
         <p class="phpdocumentor-summary">Sets the endpoint we should interact with.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -539,7 +563,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">146</span>
+        <span class="phpdocumentor-element-found-in__line">424</span>
     </aside>
         <p class="phpdocumentor-summary">Creates all the files related to an endpoint.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -572,7 +596,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">162</span>
+        <span class="phpdocumentor-element-found-in__line">487</span>
     </aside>
         <code class="phpdocumentor-signature phpdocumentor-code ">
         <span class="phpdocumentor-signature__visibility">public</span>
@@ -597,7 +621,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">190</span>
+        <span class="phpdocumentor-element-found-in__line">515</span>
     </aside>
         <p class="phpdocumentor-summary">Writes a Data Transfer Object file.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -630,7 +654,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">256</span>
+        <span class="phpdocumentor-element-found-in__line">546</span>
     </aside>
         <p class="phpdocumentor-summary">Creates a paginator class for the endpoint.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -663,7 +687,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">284</span>
+        <span class="phpdocumentor-element-found-in__line">574</span>
     </aside>
         <p class="phpdocumentor-summary">Creates a QueryBuilder class for the endpoint.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -696,7 +720,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">312</span>
+        <span class="phpdocumentor-element-found-in__line">602</span>
     </aside>
         <p class="phpdocumentor-summary">Writes a service file.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">
@@ -731,7 +755,7 @@
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="autotask/src/EndpointGenerator.php"><a href="../files/autotask-src-endpointgenerator.html"><abbr title="autotask/src/EndpointGenerator.php">EndpointGenerator.php</abbr></a></abbr>
         :
-        <span class="phpdocumentor-element-found-in__line">395</span>
+        <span class="phpdocumentor-element-found-in__line">667</span>
     </aside>
         <p class="phpdocumentor-summary">This helper method converts the Autotask type to a PHP type.</p>
         <code class="phpdocumentor-signature phpdocumentor-code ">

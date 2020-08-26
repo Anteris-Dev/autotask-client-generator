@@ -499,7 +499,7 @@ class EndpointGenerator extends AbstractFileWriter
          * Step 2. Write the information to a file
          */
         $this->writeTemplate(
-            'Collection.twig',
+            'Package/API/Collection.php.twig',
             $filename,
             [
                 'endpoint'  => $this->endpoint,
@@ -527,7 +527,7 @@ class EndpointGenerator extends AbstractFileWriter
          * Step 2. Write the information to a file
          */
         $this->writeTemplate(
-            'Entity.twig',
+            'Package/API/Entity.php.twig',
             $filename,
             [
                 'endpoint'  => $this->endpoint,
@@ -558,7 +558,7 @@ class EndpointGenerator extends AbstractFileWriter
          * Step 2. Write the information to a file
          */
         $this->writeTemplate(
-            'Paginator.twig',
+            'Package/API/Paginator.php.twig',
             $filename,
             [
                 'endpoint'  => $this->endpoint,
@@ -586,7 +586,7 @@ class EndpointGenerator extends AbstractFileWriter
          * Step 2. Write the information to a file
          */
         $this->writeTemplate(
-            'QueryBuilder.twig',
+            'Package/API/QueryBuilder.php.twig',
             $filename,
             [
                 'endpoint'  => $this->endpoint,
@@ -627,7 +627,7 @@ class EndpointGenerator extends AbstractFileWriter
          * Step 3. Write the information to a file
          */
         $this->writeTemplate(
-            'Service.twig',
+            'Package/API/Service.php.twig',
             $filename,
             [
                 'endpoint'      => $this->endpoint,
