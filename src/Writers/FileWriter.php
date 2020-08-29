@@ -128,6 +128,16 @@ class FileWriter
     }
 
     /**
+     * Returns the contents of the requested file.
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function getFile(string $filename)
+    {
+        return file_get_contents($this->baseDir . $filename);
+    }
+
+    /**
      * Takes multiple paths and joins them. Trims slashes so that unecessary ones 
      * are not present in the string and forces it to end in a forward slash.
      * 

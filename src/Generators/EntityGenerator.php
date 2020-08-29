@@ -29,6 +29,7 @@ class EntityGenerator
     protected function getImports(EntityFieldCollection $fields): array
     {
         $imports = [
+            'GuzzleHttp\Psr7\Response',
             'Spatie\DataTransferObject\DataTransferObject',
         ];
 

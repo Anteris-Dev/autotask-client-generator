@@ -5,10 +5,10 @@ namespace Anteris\Autotask\Generator;
 use Anteris\Autotask\Generator\Generators\ClientGenerator;
 use Anteris\Autotask\Generator\Generators\ResourceGenerator;
 use Anteris\Autotask\Generator\Generators\SupportGenerator;
-use Anteris\Autotask\Generator\Generators\TestDependencyGenerator;
 use Anteris\Autotask\Generator\Responses\EntityFields\EntityFieldCollection;
 use Anteris\Autotask\Generator\Responses\EntityInformation\EntityInformationDTO;
 use Anteris\Autotask\Generator\Support\Entities\EntityNameDTO;
+use Anteris\Autotask\Generator\Writers\FileWriter;
 use Anteris\Autotask\Generator\Writers\TemplateWriter;
 use Exception;
 use GuzzleHttp\Client as HttpClient;
@@ -34,6 +34,9 @@ class Generator
 
     /** @var array Keeps track of new entity fields and returns an existing version if found. */
     protected $fieldCache = [];
+
+    /** @var FileWriter Handles the writing of cached responses. */
+    protected FileWriter $cacheWriter;
 
     /** @var TemplateWriter Handles the actual writing of class files. */
     protected TemplateWriter $templateWriter;
@@ -92,6 +95,10 @@ class Generator
 
         $this->templateWriter = new TemplateWriter($outputDirectory, $this->twig);
         $this->templateWriter->setOverwrite($overwrite);
+
+        $this->cacheWriter = new FileWriter($outputDirectory);
+        $this->cacheWriter->setOverwrite(false);
+        $this->cacheWriter->createAndEnterDirectory('.cache');
     }
 
     /**
@@ -155,13 +162,21 @@ class Generator
      */
     public function getEntityInformation(EntityNameDTO $entityName): EntityInformationDTO
     {
-        if (! isset($this->entityCache[$entityName->plural])) {
-            $this->entityCache[$entityName->plural] = EntityInformationDTO::fromResponse(
+        $key = md5($entityName->plural . 'EntityInfo');
+
+        if ($this->cacheWriter->fileExists($key) == false) {
+            // Retrieve the field information from Autotask
+            $entityInfo = EntityInformationDTO::fromResponse(
                 $this->client->get($entityName->plural . '/entityInformation')
             );
+
+            // Write this information to the cache
+            $this->cacheWriter->createFile($key, serialize(
+                $entityInfo
+            ));
         }
-        
-        return $this->entityCache[$entityName->plural];
+
+        return unserialize($this->cacheWriter->getFile($key));
     }
 
     /**
@@ -171,12 +186,20 @@ class Generator
      */
     protected function getEntityFields(EntityNameDTO $entityName): EntityFieldCollection
     {
-        if (!isset($this->fieldCache[$entityName->plural])) {
-            $this->fieldCache[$entityName->plural] = EntityFieldCollection::fromResponse(
+        $key = md5($entityName->plural . 'Fields');
+
+        if ($this->cacheWriter->fileExists($key) == false) {
+            // Retrieve the field information from Autotask
+            $fields = EntityFieldCollection::fromResponse(
                 $this->client->get($entityName->plural . '/entityInformation/fields')
             );
+
+            // Write this information to the cache
+            $this->cacheWriter->createFile($key, serialize(
+                $fields
+            ));
         }
 
-        return $this->fieldCache[$entityName->plural];
+        return unserialize($this->cacheWriter->getFile($key));
     }
 }
