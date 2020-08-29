@@ -2,13 +2,21 @@
 
 namespace Anteris\Autotask\Generator;
 
+use Anteris\Autotask\Generator\Generators\ClientGenerator;
+use Anteris\Autotask\Generator\Generators\ResourceGenerator;
+use Anteris\Autotask\Generator\Generators\SupportGenerator;
+use Anteris\Autotask\Generator\Generators\TestDependencyGenerator;
+use Anteris\Autotask\Generator\Responses\EntityFields\EntityFieldCollection;
+use Anteris\Autotask\Generator\Responses\EntityInformation\EntityInformationDTO;
+use Anteris\Autotask\Generator\Support\Entities\EntityNameDTO;
+use Anteris\Autotask\Generator\Writers\TemplateWriter;
 use Exception;
 use GuzzleHttp\Client as HttpClient;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 /**
- * This class is the parent generator for Data Transfer Objects and services.
+ * This class is the parent generator for everything else.
  * 
  * @author Aidan Casey <aidan.casey@anteris.com>
  * @since  v0.1.0
@@ -21,15 +29,25 @@ class Generator
     /** @var HttpClient An HTTP client for gathering information about the resource. */
     protected $client;
 
+    /** @var array Keeps track of new entities and returns an existing version if found. */
+    protected $entityCache = [];
+
+    /** @var array Keeps track of new entity fields and returns an existing version if found. */
+    protected $fieldCache = [];
+
+    /** @var TemplateWriter Handles the actual writing of class files. */
+    protected TemplateWriter $templateWriter;
+
     /** @var Environment An instance of Twig Templating Engine. */
     protected $twig;
 
     /**
-     * Sets up the class to create a new endpoint.
+     * Sets up the generator to start creating stuff.
      * 
-     * @param  string  $username  The API user's username.
-     * @param  string  $secret    The API user's token.
-     * @param  string  $baseUri   The API URL to be used for requests.
+     * @param  string  $username        The API user's username.
+     * @param  string  $secret          The API user's token.
+     * @param  string  $outputDirectory The API URL to be used for requests.
+     * @param  bool    $overwrite       Whether or not to overwrite existing files.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
@@ -37,24 +55,23 @@ class Generator
         string $username,
         string $secret,
         string $integrationCode,
-        string $baseUri = null
+        string $outputDirectory,
+        bool $overwrite
     ) {
-        // If the Base URL is not set, find it based on the user
-        if (!$baseUri) {
-            $recon = (new HttpClient)->get('https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation', [
-                'query' => [
-                    'user' => $username,
-                ]
-            ]);
+        // Find the base url based on the user
+        $recon = (new HttpClient)->get('https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation', [
+            'query' => [
+                'user' => $username,
+            ]
+        ]);
 
-            $response = json_decode($recon->getBody(), true);
+        $response = json_decode($recon->getBody(), true);
 
-            if (!isset($response['url'])) {
-                throw new Exception('Invalid base URL!');
-            }
-
-            $baseUri = rtrim($response['url'], '/') . "/v1.0/";
+        if (!isset($response['url'])) {
+            throw new Exception('Invalid base URL!');
         }
+
+        $baseUri = rtrim($response['url'], '/') . "/v1.0/";
 
         // Setup our API Client
         $this->client = new HttpClient([
@@ -72,33 +89,94 @@ class Generator
         $this->twig = new Environment(
             new FilesystemLoader(__DIR__ . '/../templates')
         );
+
+        $this->templateWriter = new TemplateWriter($outputDirectory, $this->twig);
+        $this->templateWriter->setOverwrite($overwrite);
     }
 
     /**
-     * Returns an instance of the endpoint generator, ready to go.
+     * Makes all the client files required by the API.
+     * 
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function endpoint(): EndpointGenerator
+    public function makeClient(): void
     {
-        if (!isset($this->classCache['endpoint'])) {
-            $this->classCache['endpoint'] = new EndpointGenerator($this->client, $this->twig);
+        if (! isset($this->classCache['client'])) {
+            $this->classCache['client'] = new ClientGenerator($this->templateWriter);
         }
 
-        return $this->classCache['endpoint'];
+        $this->templateWriter->resetContext();
+        $this->classCache['client']->make();
+        $this->templateWriter->resetContext();
     }
 
     /**
-     * Returns an instance of the support generator, ready to go.
-     * This generates files that are used across multiple domains and for the
-     * most part are statically written.
+     * Make the resource files required by the passed entity.
+     * 
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function support(): SupportGenerator
+    public function makeResource(string $entityName)
     {
-        if (!isset($this->classCache['support'])) {
-            $this->classCache['support'] = new SupportGenerator($this->twig);
+        if (! isset($this->classCache['resource'])) {
+            $this->classCache['resource'] = new ResourceGenerator($this->templateWriter);
         }
 
-        return $this->classCache['support'];
+        $entityName = EntityNameDTO::fromString($entityName);
+
+        $this->templateWriter->resetContext();
+        $this->classCache['resource']->make(
+            $entityName,
+            $this->getEntityInformation($entityName),
+            $this->getEntityFields($entityName)
+        );
+        $this->templateWriter->resetContext();
+    }
+
+    /**
+     * Makes all the support files (files used across multiple domains) required by the API.
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function makeSupport()
+    {
+        if (! isset($this->classCache['support'])) {
+            $this->classCache['support'] = new SupportGenerator($this->templateWriter);
+        }
+
+        $this->templateWriter->resetContext();
+        $this->classCache['support']->make();
+        $this->templateWriter->resetContext();
+    }
+
+    /**
+     * Retrieves the actions that are allowed by the passed entity.
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function getEntityInformation(EntityNameDTO $entityName): EntityInformationDTO
+    {
+        if (! isset($this->entityCache[$entityName->plural])) {
+            $this->entityCache[$entityName->plural] = EntityInformationDTO::fromResponse(
+                $this->client->get($entityName->plural . '/entityInformation')
+            );
+        }
+        
+        return $this->entityCache[$entityName->plural];
+    }
+
+    /**
+     * Retrieves the fields that belong to the passed entity.
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    protected function getEntityFields(EntityNameDTO $entityName): EntityFieldCollection
+    {
+        if (!isset($this->fieldCache[$entityName->plural])) {
+            $this->fieldCache[$entityName->plural] = EntityFieldCollection::fromResponse(
+                $this->client->get($entityName->plural . '/entityInformation/fields')
+            );
+        }
+
+        return $this->fieldCache[$entityName->plural];
     }
 }

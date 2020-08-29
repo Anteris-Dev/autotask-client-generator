@@ -1,22 +1,22 @@
 <?php
 
-use Anteris\Autotask\API\{{ endpoint.plural }}\{{ endpoint.singular }}QueryBuilder;
+use Anteris\Autotask\API\{{ entityName.plural }}\{{ entityName.singular }}QueryBuilder;
 use Tests\AbstractTest;
 
 /**
- * @covers {{ endpoint.singular }}Service
+ * @covers {{ entityName.singular }}Service
  */
-class {{ endpoint.singular }}ServiceTest extends AbstractTest
+class {{ entityName.singular }}ServiceTest extends AbstractTest
 {
 {% if resource.canBeQueried %}
     /**
-     * @covers {{ endpoint.singular }}Service::query
+     * @covers {{ entityName.singular }}Service::query
      */
     public function testQuery()
     {
         $this->assertInstanceOf(
-            {{ endpoint.singular }}QueryBuilder::class,
-            $this->client->{{ endpoint.plural|first|lower }}{{ endpoint.plural|slice(1) }}()->query()
+            {{ entityName.singular }}QueryBuilder::class,
+            $this->client->{{ entityName.plural|first|lower }}{{ entityName.plural|slice(1) }}()->query()
         );
     }
 {% endif %}

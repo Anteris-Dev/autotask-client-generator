@@ -1,22 +1,22 @@
 <?php
 
-namespace Anteris\Autotask\API\{{ endpoint.plural }};
+namespace Anteris\Autotask\API\{{ entityName.plural }};
 
 use Anteris\Autotask\HttpClient;
 use Anteris\Autotask\Support\EntityFields\EntityFieldCollection;
 use Anteris\Autotask\Support\EntityInformation\EntityInformationEntity;
-{%- if resource.hasUserDefinedFields ~%}
+{%- if entityInformation.hasUserDefinedFields ~%}
 use Anteris\Autotask\Support\EntityUserDefinedFields\EntityUserDefinedFieldCollection;
 {%- endif ~%}
-{%- if (resource.canBeCreated or resource.canBeUpdated) ~%}
+{%- if (entityInformation.canCreate or entityInformation.canUpdate) ~%}
 use GuzzleHttp\Psr7\Response;
 {%- endif ~%}
 
 /**
- * Handles all interaction with Autotask {{ endpoint.plural }}.
- * @see https://ww14.autotask.net/help/DeveloperHelp/Content/AdminSetup/2ExtensionsIntegrations/APIs/REST/Entities/{{ endpoint.plural }}Entity.htm Autotask documentation.
+ * Handles all interaction with Autotask {{ entityName.plural }}.
+ * @see https://ww14.autotask.net/help/DeveloperHelp/Content/AdminSetup/2ExtensionsIntegrations/APIs/REST/Entities/{{ entityName.plural }}Entity.htm Autotask documentation.
  */
-class {{ endpoint.singular }}Service
+class {{ entityName.singular }}Service
 {
     /** @var Client An HTTP client for making requests to the Autotask API. */
     protected HttpClient $client;
@@ -32,67 +32,67 @@ class {{ endpoint.singular }}Service
     {
         $this->client = $client;
     }
-{%~ if resource.canBeCreated ~%}
+{%~ if entityInformation.canCreate ~%}
     /**
-     * Creates a new {{ endpoint.singular|lower }}.
+     * Creates a new {{ entityName.singular|lower }}.
      *
-     * @param  {{ endpoint.singular }}Entity  $resource  The {{ endpoint.singular|lower }} entity to be written.
+     * @param  {{ entityName.singular }}Entity  $resource  The {{ entityName.singular|lower }} entity to be written.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function create({{ endpoint.singular }}Entity $resource): Response
+    public function create({{ entityName.singular }}Entity $resource): Response
     {
-        {%~ if parentRef %}
-        ${{ parentRef }} = $resource->{{ parentRef }};
+        {%~ if parent.ref %}
+        ${{ parent.ref }} = $resource->{{ parent.ref }};
         {%~ endif %}
         return $this->client->post("
-            {%- if parentPath -%}
-                {{- parentPath | raw -}}
+            {%- if parent.path -%}
+                {{- parent.path | raw -}}
             {%- else -%}
-                {{- endpoint.plural -}}
+                {{- entityName.plural -}}
             {%- endif -%}
             ", $resource->toArray());
     }
 {%~ endif -%}
 
-{%- if resource.canBeDeleted ~%}
+{%- if entityInformation.canDelete ~%}
     /**
      * Deletes an entity by its ID.
      *
-{% if parentPath %}
-     * @param  int  ${{ parentRef }}  ID of the {{ endpoint.singular }} parent resource.
+{% if parent.path %}
+     * @param  int  ${{ parent.ref }}  ID of the {{ entityName.singular }} parent resource.
 {%~ endif %}
-     * @param  int  $id  ID of the {{ endpoint.singular }} to be deleted.
+     * @param  int  $id  ID of the {{ entityName.singular }} to be deleted.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function deleteById(
-        {%- if parentPath -%}
-            int ${{ parentRef }},
+        {%- if parent.path -%}
+            int ${{ parent.ref }},
         {%- endif -%} int $id): void
     {
         $this->client->delete("
-            {%- if parentPath -%}
-                {{- parentPath | raw -}}
+            {%- if parent.path -%}
+                {{- parent.path | raw -}}
             {%- else -%}
-                {{- endpoint.plural -}}
+                {{- entityName.plural -}}
             {%- endif -%}
         /$id");
     }
 {%~ endif -%}
 
-{%- if resource.canBeQueried ~%}
+{%- if entityInformation.canQuery ~%}
     /**
-     * Finds the {{ endpoint.singular }} based on its ID.
+     * Finds the {{ entityName.singular }} based on its ID.
      *
      * @param  string $id  ID of the entity to be retrieved.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function findById(int $id): {{ endpoint.singular }}Entity
+    public function findById(int $id): {{ entityName.singular }}Entity
     {
-        return {{ endpoint.singular }}Entity::fromResponse(
-            $this->client->get("{{ endpoint.plural }}/$id")
+        return {{ entityName.singular }}Entity::fromResponse(
+            $this->client->get("{{ entityName.plural }}/$id")
         );
     }
 {%~ endif ~%}
@@ -106,7 +106,7 @@ class {{ endpoint.singular }}Service
     public function getEntityFields(): EntityFieldCollection
     {
         return EntityFieldCollection::fromResponse(
-            $this->client->get("{{ endpoint.plural }}/entityInformation/fields")
+            $this->client->get("{{ entityName.plural }}/entityInformation/fields")
         );
     }
 
@@ -120,10 +120,10 @@ class {{ endpoint.singular }}Service
     public function getEntityInformation(): EntityInformationEntity
     {
         return EntityInformationEntity::fromResponse(
-            $this->client->get("{{ endpoint.plural }}/entityInformation")
+            $this->client->get("{{ entityName.plural }}/entityInformation")
         );
     }
-{%~ if resource.hasUserDefinedFields ~%}
+{%~ if entityInformation.hasUserDefinedFields ~%}
     /**
      * Returns information about what user defined fields an entity has.
      *
@@ -134,11 +134,11 @@ class {{ endpoint.singular }}Service
     public function getEntityUserDefinedFields(): EntityUserDefinedFieldCollection
     {
         return EntityUserDefinedFieldCollection::fromResponse(
-            $this->client->get("{{ endpoint.plural }}/entityInformation/userDefinedFields")
+            $this->client->get("{{ entityName.plural }}/entityInformation/userDefinedFields")
         );
     }
 {%~ endif -%}
-{%- if resource.canBeQueried ~%}
+{%- if entityInformation.canQuery ~%}
     /**
      * Returns an instance of the query builder for this entity.
      *
@@ -146,30 +146,30 @@ class {{ endpoint.singular }}Service
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function query(): {{ endpoint.singular }}QueryBuilder
+    public function query(): {{ entityName.singular }}QueryBuilder
     {
-        return new {{ endpoint.singular }}QueryBuilder($this->client);
+        return new {{ entityName.singular }}QueryBuilder($this->client);
     }
 {%~ endif -%}
 
-{%- if resource.canBeUpdated ~%}
+{%- if entityInformation.canUpdate ~%}
     /**
-     * Updates the {{ endpoint.singular|lower }}.
+     * Updates the {{ entityName.singular|lower }}.
      *
-     * @param  {{ endpoint.singular }}Entity  $resource  The {{ endpoint.singular|lower }} entity to be updated.
+     * @param  {{ entityName.singular }}Entity  $resource  The {{ entityName.singular|lower }} entity to be updated.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function update({{ endpoint.singular }}Entity $resource): Response
+    public function update({{ entityName.singular }}Entity $resource): Response
     {
-        {%~ if parentRef %}
-        ${{ parentRef }} = $resource->{{ parentRef }};
+        {%~ if parent.ref %}
+        ${{ parent.ref }} = $resource->{{ parent.ref }};
         {%~ endif %}
         return $this->client->put("
-            {%- if parentPath -%}
-                {{- parentPath | raw -}}
+            {%- if parent.path -%}
+                {{- parent.path | raw -}}
             {%- else -%}
-                {{- endpoint.plural -}}
+                {{- entityName.plural -}}
             {%- endif -%}
         ", $resource->toArray());
     }

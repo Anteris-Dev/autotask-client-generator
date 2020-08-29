@@ -1,6 +1,6 @@
 <?php
 
-namespace Anteris\Autotask\API\{{ endpoint.plural }};
+namespace Anteris\Autotask\API\{{ entityName.plural }};
 
 use Anteris\Autotask\HttpClient;
 use Anteris\Autotask\Support\Pagination\PageEntity;
@@ -9,10 +9,10 @@ use GuzzleHttp\Psr7\Response;
 /**
  * Returns a collection with methods that help page through results.
  */
-class {{ endpoint.singular }}Paginator
+class {{ entityName.singular }}Paginator
 {
-    /** @var {{ endpoint.singular }}Collection Collection of {{ endpoint.plural|lower }}. */
-    public {{ endpoint.singular }}Collection $collection;
+    /** @var {{ entityName.singular }}Collection Collection of {{ entityName.plural|lower }}. */
+    public {{ entityName.singular }}Collection $collection;
 
     /** @var HttpClient Http client for retrieving pages. */
     protected HttpClient $client;
@@ -30,7 +30,7 @@ class {{ endpoint.singular }}Paginator
      */
     public function __construct(HttpClient $client, $response)
     {
-        $contacts = {{ endpoint.singular }}Collection::fromResponse($response);
+        $contacts = {{ entityName.singular }}Collection::fromResponse($response);
         $page     = PageEntity::fromResponse($response);
 
         $this->client = $client;
@@ -71,7 +71,7 @@ class {{ endpoint.singular }}Paginator
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function nextPage(): {{ endpoint.singular }}Paginator
+    public function nextPage(): {{ entityName.singular }}Paginator
     {
         $response = $this->client->getClient()->get($this->page->nextPageUrl);
         return new static($this->client, $response);
@@ -82,7 +82,7 @@ class {{ endpoint.singular }}Paginator
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function prevPage (): {{ endpoint.singular }}Paginator
+    public function prevPage (): {{ entityName.singular }}Paginator
     {
         $response = $this->client->getClient()->get($this->page->prevPageUrl);
         return new static($this->client, $response);

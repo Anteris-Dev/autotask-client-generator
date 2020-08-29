@@ -1,6 +1,6 @@
 <?php
 
-namespace Anteris\Autotask\API\{{ endpoint.plural }};
+namespace Anteris\Autotask\API\{{ entityName.plural }};
 
 use Anteris\Autotask\HttpClient;
 use Exception;
@@ -9,7 +9,7 @@ use Exception;
  * Helps build a query to send to Autotask.
  * @see https://ww14.autotask.net/help/DeveloperHelp/Content/AdminSetup/2ExtensionsIntegrations/APIs/REST/API_Calls/REST_Basic_Query_Calls.htm Autotask documentation.
  */
-class {{ endpoint.singular }}QueryBuilder
+class {{ entityName.singular }}QueryBuilder
 {
     /** @var HttpClient An HTTP client for making API requests. */
     protected HttpClient $client;
@@ -40,7 +40,7 @@ class {{ endpoint.singular }}QueryBuilder
      */
      public function count(): int
      {
-         $response = $this->client->get("{{ endpoint.plural }}/query/count", [
+         $response = $this->client->get("{{ entityName.plural }}/query/count", [
              'search' => json_encode( $this->toArray() )
          ]);
 
@@ -56,25 +56,25 @@ class {{ endpoint.singular }}QueryBuilder
     /**
      * Runs the query.
      */
-    public function get(): {{ endpoint.singular }}Collection
+    public function get(): {{ entityName.singular }}Collection
     {
-        $response = $this->client->get("{{ endpoint.plural }}/query", [
+        $response = $this->client->get("{{ entityName.plural }}/query", [
             'search' => json_encode( $this->toArray() )
         ]);
 
-        return {{ endpoint.singular }}Collection::fromResponse($response);
+        return {{ entityName.singular }}Collection::fromResponse($response);
     }
 
     /**
      * Runs the query and returns a paginator object.
      */
-    public function paginate(): {{ endpoint.singular }}Paginator
+    public function paginate(): {{ entityName.singular }}Paginator
     {
-        $response = $this->client->get("{{ endpoint.plural }}/query", [
+        $response = $this->client->get("{{ entityName.plural }}/query", [
             'search' => json_encode($this->toArray())
         ]);
 
-        return new {{ endpoint.singular }}Paginator($this->client, $response);
+        return new {{ entityName.singular }}Paginator($this->client, $response);
     }
 
     /**

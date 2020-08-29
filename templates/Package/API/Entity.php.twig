@@ -1,26 +1,26 @@
 <?php
 
-namespace Anteris\Autotask\API\{{ endpoint.plural }};
+namespace Anteris\Autotask\API\{{ entityName.plural }};
 
 {%~ for import in imports|sort %}
 use {{ import }};
 {%~ endfor %}
 
 /**
- * Represents {{ endpoint.singular }} entities.
+ * Represents {{ entityName.singular }} entities.
  */
-class {{ endpoint.singular }}Entity extends DataTransferObject
+class {{ entityName.singular }}Entity extends DataTransferObject
 {
 {% for field in fields %}
-    public {% if field.required != true -%}?{%- endif -%}{{- field.type }} ${{ field.name -}};
+    public {% if field.isRequired != true -%}?{%- endif -%}{{- field.dataType }} ${{ field.name -}};
 {%~ endfor %}
-{%- if resource.hasUserDefinedFields ~%}
+{%- if entityInformation.hasUserDefinedFields ~%}
     /** @var \Anteris\Autotask\Support\UserDefinedFields\UserDefinedFieldEntity[] */
     public array $userDefinedFields;
 {%~ endif %}
 
     /**
-     * Creates a new {{ endpoint.singular }} entity.
+     * Creates a new {{ entityName.singular }} entity.
      * If this entity has dates, they will be cast as Carbon objects.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
@@ -28,7 +28,7 @@ class {{ endpoint.singular }}Entity extends DataTransferObject
     public function __construct(array $array)
     {
 {%- for field in fields -%}
-    {%~ if field.type == 'Carbon' ~%}
+    {%~ if field.dataType == 'Carbon' ~%}
         if (isset($array['{{- field.name -}}'])) {
             $array['{{- field.name -}}'] = new Carbon($array['{{- field.name -}}']);
         }
