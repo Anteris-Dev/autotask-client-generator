@@ -39,4 +39,15 @@ class TemplateWriter extends FileWriter
             $this->twig->render($template, $replacements)
         );
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function newContext(): TemplateWriter
+    {
+        $context = new static($this->originalBaseDir, $this->twig);
+        $context->setOverwrite($this->overwrite);
+
+        return $context;
+    }
 }

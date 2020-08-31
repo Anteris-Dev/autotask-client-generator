@@ -23,6 +23,7 @@ class MakeEndpointCommand extends AbstractMakeCommand
         $this
             ->setDescription('Creates a new PHP class for interacting with an Autotask service.')
             ->addArgument('entity', InputArgument::REQUIRED, 'The entity to generate classes for.')
+            ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Specifies whether any previous cached files should be ignored (still makes use of cache for efficiency, but clears afterward).')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Sets the output directory for the generated class.')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrites previous classes if they exist.');
     }
@@ -33,20 +34,10 @@ class MakeEndpointCommand extends AbstractMakeCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->setupEnvironment($input, $output);
-        $endpoint = $this->generator->endpoint();
 
         try {
-            $outputDirectory = $input->getOption('output') ?? Env::get('AUTOTASK_GENERATOR_DIRECTORY', getcwd());
-            $endpoint->setOutputDirectory($outputDirectory);
-
-            if ($input->getOption('force')) {
-                $endpoint->setOverwrite(true);
-            }
-
-            $endpoint->setEndpoint($input->getArgument('entity'));
-            
             $output->writeln('Generating classes for ' . $input->getArgument('entity'));
-            $endpoint->make();
+            $this->generator->makeResource($input->getArgument('entity'));
         } catch (\Exception $error) {
             $output->writeln(
                 '<error>There was an error creating that endpoint: ' .
@@ -56,13 +47,18 @@ class MakeEndpointCommand extends AbstractMakeCommand
             return Command::FAILURE;
         }
 
-        $output->writeln('<info>Successfully created endpoint!');
+        $output->writeln(
+            '<info>Successfully created endpoint in ' .
+            (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) .
+            ' seconds!</info>'
+        );
+        $output->writeln('');
 
         // Regenerate support classes
         $command = $this->getApplication()->find('make:support-files');
         return $command->run(
             new ArrayInput([
-                '-o' => $outputDirectory,
+                '-o' => $input->getOption('output') ?? Env::get('AUTOTASK_GENERATOR_DIRECTORY', getcwd()),
                 '-f' => true,
             ]),
             $output

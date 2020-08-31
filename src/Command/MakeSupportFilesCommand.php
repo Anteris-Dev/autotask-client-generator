@@ -30,21 +30,12 @@ class MakeSupportFilesCommand extends AbstractMakeCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->setupEnvironment($input, $output);
-        $support = $this->generator->support();
 
         try {
-            if ($input->getOption('output')) {
-                $support->setOutputDirectory($input->getOption('output'));
-            } else {
-                $support->setOutputDirectory(Env::get('AUTOTASK_GENERATOR_DIRECTORY', getcwd()));
-            }
-
-            if ($input->getOption('force')) {
-                $support->setOverwrite(true);
-            }
-
             $output->writeln('Re-generating support classes');
-            $support->make();
+            
+            $this->generator->makeClient();
+            $this->generator->makeSupport();
         } catch (\Exception $error) {
             $output->writeln(
                 '<error>There was an error re-generating support files: ' .

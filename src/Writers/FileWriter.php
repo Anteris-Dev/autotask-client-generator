@@ -2,6 +2,7 @@
 
 namespace Anteris\Autotask\Generator\Writers;
 
+use DirectoryIterator;
 use Exception;
 
 /**
@@ -24,7 +25,7 @@ class FileWriter
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function __construct(string $baseDir) {
-        $this->originalBaseDir = $this->baseDir = rtrim($baseDir, '\\/');
+        $this->originalBaseDir = $this->baseDir = rtrim($baseDir, '\\/') . '/';
     }
 
     /**
@@ -79,6 +80,36 @@ class FileWriter
     {
         $this->createDirectory($directory);
         $this->enterDirectory($directory);
+    }
+
+    /**
+     * Deletes a directory.
+     */
+    public function deleteDirectory(string $directory)
+    {
+        $deleted = $this->deleteFilesInDirectory(
+            $this->joinPaths($this->baseDir, $directory)
+        );
+
+        if (! $deleted) {
+            throw new Exception("Unable to delete $directory!");
+        }
+    }
+
+    /**
+     * Deletes the specified file.
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function deleteFile(string $filename)
+    {
+        $deleted = unlink(
+            $this->baseDir . $filename
+        );
+
+        if (! $deleted) {
+            throw new Exception("Unable to delete $filename!");
+        }
     }
 
     /**
@@ -162,6 +193,21 @@ class FileWriter
     }
 
     /**
+     * Creates a new instance of this writer with the original base directory.
+     * This is useful for those scenarios where you would run resetContext() before
+     * and after calling an action.
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function newContext(): FileWriter
+    {
+        $context = new static($this->originalBaseDir);
+        $context->setOverwrite($this->overwrite);
+
+        return $context;
+    }
+
+    /**
      * Resets the current context to what it was originally.
      * 
      * @author Aidan Casey <aidan.casey@anteris.com>
@@ -178,5 +224,29 @@ class FileWriter
      */
     public function setOverwrite(bool $overwrite = true) {
         $this->overwrite = $overwrite;
+    }
+
+    /**
+     * Deletes all the files in a directory (NOT RELATIVE).
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    protected function deleteFilesInDirectory(string $directory)
+    {
+        foreach (new DirectoryIterator($directory) as $item) {
+            if ($item->isDot()) {
+                continue;
+            }
+
+            if ($item->isFile()) {
+                unlink($item->getPathname());
+            }
+
+            if ($item->isDir()) {
+                $this->deleteFilesInDirectory($item->getPathName());
+            }
+        }
+
+        return rmdir($directory);
     }
 }

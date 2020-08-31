@@ -8,6 +8,7 @@ use Anteris\Autotask\Generator\Generators\SupportGenerator;
 use Anteris\Autotask\Generator\Responses\EntityFields\EntityFieldCollection;
 use Anteris\Autotask\Generator\Responses\EntityInformation\EntityInformationDTO;
 use Anteris\Autotask\Generator\Support\Entities\EntityNameDTO;
+use Anteris\Autotask\Generator\Writers\CacheWriter;
 use Anteris\Autotask\Generator\Writers\FileWriter;
 use Anteris\Autotask\Generator\Writers\TemplateWriter;
 use Exception;
@@ -23,20 +24,17 @@ use Twig\Loader\FilesystemLoader;
  */
 class Generator
 {
+    /** @var bool Whether or not the cache should be saved for next run. */
+    protected bool $cache;
+
+    /** @var FileWriter Handles the writing of cached responses. */
+    protected CacheWriter $cacheWriter;
+
     /** @var array Keeps track of new classes and returns an existing version if found. */
     protected $classCache = [];
 
     /** @var HttpClient An HTTP client for gathering information about the resource. */
     protected $client;
-
-    /** @var array Keeps track of new entities and returns an existing version if found. */
-    protected $entityCache = [];
-
-    /** @var array Keeps track of new entity fields and returns an existing version if found. */
-    protected $fieldCache = [];
-
-    /** @var FileWriter Handles the writing of cached responses. */
-    protected FileWriter $cacheWriter;
 
     /** @var TemplateWriter Handles the actual writing of class files. */
     protected TemplateWriter $templateWriter;
@@ -51,6 +49,7 @@ class Generator
      * @param  string  $secret          The API user's token.
      * @param  string  $outputDirectory The API URL to be used for requests.
      * @param  bool    $overwrite       Whether or not to overwrite existing files.
+     * @param  bool    $cache           Whether or not to cache the responses permanently.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
@@ -59,26 +58,43 @@ class Generator
         string $secret,
         string $integrationCode,
         string $outputDirectory,
-        bool $overwrite
+        bool $overwrite = false,
+        bool $cache = true
     ) {
-        // Find the base url based on the user
-        $recon = (new HttpClient)->get('https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation', [
-            'query' => [
-                'user' => $username,
-            ]
-        ]);
+        // Setup the cache first so we can use it for the Base URL
+        $this->cacheWriter = new CacheWriter($outputDirectory);
+        $this->cache = $cache;
 
-        $response = json_decode($recon->getBody(), true);
-
-        if (!isset($response['url'])) {
-            throw new Exception('Invalid base URL!');
+        // If not caching, do a quick clear of the cache in case something exists.
+        if (!$this->cache) {
+            $this->cacheWriter->resetCache();
         }
 
-        $baseUri = rtrim($response['url'], '/') . "/v1.0/";
+        // Find the base url based on the user
+        $cacheKey = "baseurl+$username";
+
+        if (! $this->cacheWriter->inCache($cacheKey)) {
+            $recon = (new HttpClient)->get('https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation', [
+                'query' => [
+                    'user' => $username,
+                ]
+            ]);
+
+            $response = json_decode($recon->getBody(), true);
+
+            if (!isset($response['url'])) {
+                throw new Exception('Invalid base URL!');
+            }
+
+            $this->cacheWriter->cache(
+                $cacheKey,
+                (rtrim($response['url'], '/') . '/v1.0/')
+            );
+        }
 
         // Setup our API Client
         $this->client = new HttpClient([
-            'base_uri' => $baseUri,
+            'base_uri' => $this->cacheWriter->getCached($cacheKey),
             'headers'  => [
                 'APIIntegrationcode'    => $integrationCode,
                 'Username'              => $username,
@@ -95,10 +111,6 @@ class Generator
 
         $this->templateWriter = new TemplateWriter($outputDirectory, $this->twig);
         $this->templateWriter->setOverwrite($overwrite);
-
-        $this->cacheWriter = new FileWriter($outputDirectory);
-        $this->cacheWriter->setOverwrite(false);
-        $this->cacheWriter->createAndEnterDirectory('.cache');
     }
 
     /**
@@ -108,13 +120,13 @@ class Generator
      */
     public function makeClient(): void
     {
-        if (! isset($this->classCache['client'])) {
-            $this->classCache['client'] = new ClientGenerator($this->templateWriter);
-        }
-
-        $this->templateWriter->resetContext();
-        $this->classCache['client']->make();
-        $this->templateWriter->resetContext();
+        // if (! isset($this->classCache['client'])) {
+        //     $this->classCache['client'] = new ClientGenerator($this->templateWriter);
+        // }
+        $clientGenerator = new ClientGenerator($this->templateWriter->newContext());
+        // $this->templateWriter->resetContext();
+        $clientGenerator->make();
+        // $this->templateWriter->resetContext();
     }
 
     /**
@@ -124,19 +136,19 @@ class Generator
      */
     public function makeResource(string $entityName)
     {
-        if (! isset($this->classCache['resource'])) {
-            $this->classCache['resource'] = new ResourceGenerator($this->templateWriter);
-        }
-
+        // if (! isset($this->classCache['resource'])) {
+        //     $this->classCache['resource'] = 
+        // }
+        $resourceGenerator = new ResourceGenerator($this->templateWriter->newContext());
         $entityName = EntityNameDTO::fromString($entityName);
 
-        $this->templateWriter->resetContext();
-        $this->classCache['resource']->make(
+        // $this->templateWriter->resetContext();
+        $resourceGenerator->make(
             $entityName,
             $this->getEntityInformation($entityName),
             $this->getEntityFields($entityName)
         );
-        $this->templateWriter->resetContext();
+        // $this->templateWriter->resetContext();
     }
 
     /**
@@ -146,12 +158,12 @@ class Generator
      */
     public function makeSupport()
     {
-        if (! isset($this->classCache['support'])) {
-            $this->classCache['support'] = new SupportGenerator($this->templateWriter);
-        }
-
+        // if (! isset($this->classCache['support'])) {
+        //     $this->classCache['support'] = new SupportGenerator($this->templateWriter);
+        // }
+        $supportGenerator = new SupportGenerator($this->templateWriter->newContext());
         $this->templateWriter->resetContext();
-        $this->classCache['support']->make();
+        $supportGenerator->make();
         $this->templateWriter->resetContext();
     }
 
@@ -162,21 +174,18 @@ class Generator
      */
     public function getEntityInformation(EntityNameDTO $entityName): EntityInformationDTO
     {
-        $key = md5($entityName->plural . 'EntityInfo');
+        $key = $entityName->singular . 'EntityInformation';
 
-        if ($this->cacheWriter->fileExists($key) == false) {
-            // Retrieve the field information from Autotask
-            $entityInfo = EntityInformationDTO::fromResponse(
-                $this->client->get($entityName->plural . '/entityInformation')
+        if (! $this->cacheWriter->inCache($key)) {            
+            $this->cacheWriter->cache(
+                $key,
+                EntityInformationDTO::fromResponse(
+                    $this->client->get($entityName->plural . '/entityInformation')
+                )
             );
-
-            // Write this information to the cache
-            $this->cacheWriter->createFile($key, serialize(
-                $entityInfo
-            ));
         }
 
-        return unserialize($this->cacheWriter->getFile($key));
+        return $this->cacheWriter->getCached($key);
     }
 
     /**
@@ -186,20 +195,28 @@ class Generator
      */
     protected function getEntityFields(EntityNameDTO $entityName): EntityFieldCollection
     {
-        $key = md5($entityName->plural . 'Fields');
+        $key = md5($entityName->singular . 'Fields');
 
-        if ($this->cacheWriter->fileExists($key) == false) {
-            // Retrieve the field information from Autotask
-            $fields = EntityFieldCollection::fromResponse(
-                $this->client->get($entityName->plural . '/entityInformation/fields')
+        if (! $this->cacheWriter->inCache($key)) {
+            $this->cacheWriter->cache($key,
+                EntityFieldCollection::fromResponse(
+                    $this->client->get($entityName->plural . '/entityInformation/fields')
+                )
             );
-
-            // Write this information to the cache
-            $this->cacheWriter->createFile($key, serialize(
-                $fields
-            ));
         }
 
-        return unserialize($this->cacheWriter->getFile($key));
+        return $this->cacheWriter->getCached($key);
+    }
+
+    /**
+     * Clears the cache if caching is turned off.
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function __destruct()
+    {
+        if ($this->cache == false) {
+            $this->cacheWriter->clearCache();
+        }
     }
 }

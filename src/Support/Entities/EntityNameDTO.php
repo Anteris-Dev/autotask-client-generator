@@ -22,6 +22,7 @@ class EntityNameDTO extends DataTransferObject
      */
     public static function fromString(string $string): EntityNameDTO
     {
+        $string = ucfirst($string);
         return new static([
             'plural'    => Str::pluralStudly($string),
             'singular'  => Str::singular($string),

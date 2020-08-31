@@ -6,10 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- FileWriter classes which handle any interaction with files for this package.
+- Generator classes which handle the generation of any files within their domain.
+- Response entities and collections to easily transfer information between generators.
+- Caching mechanism for Autotask API responses.
+- __toString() method on the QueryBuilder template which allows the built query to be used as a string.
+
 ### Changed
 - Folder structure of Twig templates to reflect that of the generated package.
 - Filenames of Twig templates to end with the extension of `.php.twig`.
+- Changed the name of the entity name data transfer object and moved it to the support folder.
 
+### Fixed
+- Paginator classes were generated with a funky $contacts variable (even if they were not a contact resource!)
 
 ## [v0.2.0]
 

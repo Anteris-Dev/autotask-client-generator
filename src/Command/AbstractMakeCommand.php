@@ -21,9 +21,14 @@ abstract class AbstractMakeCommand extends Command
     {
         // If we've set this up in the environment before,
         // don't ask the same old questions
-        $username = Env::get('AUTOTASK_API_USERNAME');
-        $secret   = Env::get('AUTOTASK_API_SECRET');
-        $ic       = Env::GET('AUTOTASK_API_INTEGRATION_CODE');
+        $username   = Env::get('AUTOTASK_API_USERNAME');
+        $secret     = Env::get('AUTOTASK_API_SECRET');
+        $ic         = Env::get('AUTOTASK_API_INTEGRATION_CODE');
+        $outputDir  = $input->getOption('output') ?? Env::get('AUTOTASK_GENERATOR_DIRECTORY', getcwd());
+        $force      = $input->hasOption('force') ? $input->getOption('force') : false;
+        $noCache    = $input->hasOption('no-cache') ? $input->getOption('no-cache') : false;
+
+        $output->writeln($force);
 
         if (!$username || !$secret || !$ic) {
             // Ask some questions
@@ -49,6 +54,13 @@ abstract class AbstractMakeCommand extends Command
             );
         }
 
-        $this->generator = new Generator($username, $secret, $ic);
+        $this->generator = new Generator(
+            $username,
+            $secret,
+            $ic,
+            $outputDir,
+            $force,
+            !($noCache)
+        );
     }
 }

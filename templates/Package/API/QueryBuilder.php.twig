@@ -4,6 +4,8 @@ namespace Anteris\Autotask\API\{{ entityName.plural }};
 
 use Anteris\Autotask\HttpClient;
 use Exception;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
 
 /**
  * Helps build a query to send to Autotask.
@@ -257,5 +259,22 @@ class {{ entityName.singular }}QueryBuilder
         ) {
             throw new Exception("Invalid query operator: $operator");
         }
+    }
+
+    /**
+     * Converts the built query into a string and returns.
+     *
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public function __toString()
+    {
+        $uri = UriResolver::resolve(
+            $this->client->getClient()->getConfig()['base_uri'],
+            new Uri('{{ entityName.plural }}/query')
+        );
+
+        return (string) Uri::withQueryValues($uri, [
+            'search' => json_encode($this->toArray())
+        ]);
     }
 }
