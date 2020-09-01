@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `paymentTerms` and `quantityNowReceiving` are now nullable given how Autotask responds to these requests.
 - Types of _long_ and _short_ from Autotask are given no type. There is not a good PHP alternative (int is too short, double does not work).
 - ContractID is cast to an integer instead of string. (Autotask says its dataType should be string but returns int).
+- Directory structure to plural form of name as with the generated files.
 
 ### Fixed
 - Paginator classes were generated with a funky $contacts variable (even if they were not a contact resource!)

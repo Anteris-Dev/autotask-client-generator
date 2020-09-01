@@ -1,6 +1,6 @@
 <?php
 
-namespace Anteris\Autotask\Generator\Helper;
+namespace Anteris\Autotask\Generator\Helpers;
 
 use Exception;
 use GuzzleHttp\Client;

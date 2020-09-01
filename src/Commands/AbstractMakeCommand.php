@@ -1,6 +1,6 @@
 <?php
 
-namespace Anteris\Autotask\Generator\Command;
+namespace Anteris\Autotask\Generator\Commands;
 
 use Anteris\Autotask\Generator\Generator;
 use Illuminate\Support\Env;

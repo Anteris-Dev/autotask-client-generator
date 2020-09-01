@@ -2,7 +2,7 @@
 
 namespace Anteris\Autotask\Generator\Responses\EntityFields;
 
-use Anteris\Autotask\Generator\Helper\Str;
+use Anteris\Autotask\Generator\Helpers\Str;
 use Spatie\DataTransferObject\DataTransferObject;
 
 /**

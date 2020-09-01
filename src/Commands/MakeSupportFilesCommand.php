@@ -1,6 +1,6 @@
 <?php
 
-namespace Anteris\Autotask\Generator\Command;
+namespace Anteris\Autotask\Generator\Commands;
 
 use Illuminate\Support\Env;
 use Symfony\Component\Console\Command\Command;
