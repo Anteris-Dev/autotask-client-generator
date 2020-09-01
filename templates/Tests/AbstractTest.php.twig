@@ -4,6 +4,7 @@ namespace Tests;
 
 use Anteris\Autotask\Client;
 use Dotenv\Dotenv;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractTest extends TestCase
@@ -27,23 +28,28 @@ abstract class AbstractTest extends TestCase
         }
 
         // Next check each individual one
-        if (! $username = getenv('AUTOTASK_API_USERNAME')) {
+        if (! isset($_ENV['AUTOTASK_API_USERNAME'])) {
             throw new Exception('Unable to find find AUTOTASK_API_USERNAME env variable!');
         }
 
-        if (! $secret = getenv('AUTOTASK_API_SECRET')) {
+        if (! isset($_ENV['AUTOTASK_API_SECRET'])) {
             throw new Exception('Unable to find find AUTOTASK_API_SECRET env variable!');
         }
 
-        if (! $ic = getenv('AUTOTASK_API_INTEGRATION_CODE')) {
+        if (! isset($_ENV['AUTOTASK_API_INTEGRATION_CODE'])) {
             throw new Exception('Unable to find find AUTOTASK_API_INTEGRATION_CODE env variable!');
         }
 
-        if (! $baseUri = getenv('AUTOTASK_API_BASE_URI')) {
+        if (! isset($_ENV['AUTOTASK_API_BASE_URI'])) {
             throw new Exception('Unable to find find AUTOTASK_API_BASE_URI env variable!');
         }
 
         // Now try creating the client
-        $this->client = new Client($username, $secret, $ic, $baseUri);
+        $this->client = new Client(
+            $_ENV['AUTOTASK_API_USERNAME'],
+            $_ENV['AUTOTASK_API_SECRET'],
+            $_ENV['AUTOTASK_API_INTEGRATION_CODE'],
+            $_ENV['AUTOTASK_API_BASE_URI']
+        );
     }
 }
