@@ -120,13 +120,8 @@ class Generator
      */
     public function makeClient(): void
     {
-        // if (! isset($this->classCache['client'])) {
-        //     $this->classCache['client'] = new ClientGenerator($this->templateWriter);
-        // }
         $clientGenerator = new ClientGenerator($this->templateWriter->newContext());
-        // $this->templateWriter->resetContext();
         $clientGenerator->make();
-        // $this->templateWriter->resetContext();
     }
 
     /**
@@ -136,19 +131,14 @@ class Generator
      */
     public function makeResource(string $entityName)
     {
-        // if (! isset($this->classCache['resource'])) {
-        //     $this->classCache['resource'] = 
-        // }
         $resourceGenerator = new ResourceGenerator($this->templateWriter->newContext());
         $entityName = EntityNameDTO::fromString($entityName);
 
-        // $this->templateWriter->resetContext();
         $resourceGenerator->make(
             $entityName,
             $this->getEntityInformation($entityName),
             $this->getEntityFields($entityName)
         );
-        // $this->templateWriter->resetContext();
     }
 
     /**
@@ -158,13 +148,8 @@ class Generator
      */
     public function makeSupport()
     {
-        // if (! isset($this->classCache['support'])) {
-        //     $this->classCache['support'] = new SupportGenerator($this->templateWriter);
-        // }
         $supportGenerator = new SupportGenerator($this->templateWriter->newContext());
-        $this->templateWriter->resetContext();
         $supportGenerator->make();
-        $this->templateWriter->resetContext();
     }
 
     /**

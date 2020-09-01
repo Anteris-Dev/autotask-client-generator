@@ -419,5 +419,8 @@ class ServiceGenerator
             $queryBuilderGenerator = new QueryBuilderGenerator($this->writer);
             $queryBuilderGenerator->make($entityName);
         }
+
+        $serviceTestGenerator = new ServiceTestGenerator($this->writer->newContext());
+        $serviceTestGenerator->make($entityName, $entityInformation);
     }
 }

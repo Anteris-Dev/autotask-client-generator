@@ -11,11 +11,26 @@ use Spatie\DataTransferObject\DataTransferObject;
  */
 class EntityNameDTO extends DataTransferObject
 {
-    /** @var string The plural form of the endpoint name. */
     public string $plural;
-
-    /** @var string The singular form of the endpoint name. */
+    public string $pluralSnake;
     public string $singular;
+    public string $singularSnake;
+
+    /**
+     * Handles snake case stuff.
+     */
+    public function __construct($parameters)
+    {
+        if (isset($parameters['plural'])) {
+            $parameters['pluralSnake'] = Str::snake($parameters['plural']);
+        }
+
+        if (isset($parameters['singular'])) {
+            $parameters['singularSnake'] = Str::snake($parameters['singular']);
+        }
+
+        parent::__construct($parameters);
+    }
 
     /**
      * Creates a new instance of this class from a string.

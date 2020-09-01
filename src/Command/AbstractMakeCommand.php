@@ -28,8 +28,6 @@ abstract class AbstractMakeCommand extends Command
         $force      = $input->hasOption('force') ? $input->getOption('force') : false;
         $noCache    = $input->hasOption('no-cache') ? $input->getOption('no-cache') : false;
 
-        $output->writeln($force);
-
         if (!$username || !$secret || !$ic) {
             // Ask some questions
             $helper = $this->getHelper('question');

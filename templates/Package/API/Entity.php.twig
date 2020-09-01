@@ -12,12 +12,14 @@ use {{ import }};
 class {{ entityName.singular }}Entity extends DataTransferObject
 {
 {% for field in fields %}
-    public {% if field.isRequired != true -%}?{%- endif -%}{{- field.dataType }} ${{ field.name -}};
+    public {% if (field.isRequired != true and field.dataType != 'null') or (field.name == 'paymentTerms') or (field.name == 'quantityNowReceiving') -%}?{%- endif -%}{%- if field.dataType != 'null' %}{{- field.dataType }} {% endif %}${{ field.name -}};
 {%~ endfor %}
-{%- if entityInformation.hasUserDefinedFields ~%}
-    /** @var \Anteris\Autotask\Support\UserDefinedFields\UserDefinedFieldEntity[] */
-    public array $userDefinedFields;
+{% if 'Attachment' in entityName.plural and entityName.singular != 'AttachmentInfo' %}
+    public $id;
+    public ?string $data;
 {%~ endif %}
+    /** @var \Anteris\Autotask\Support\UserDefinedFields\UserDefinedFieldEntity[]|null */
+    public ?array $userDefinedFields;
 
     /**
      * Creates a new {{ entityName.singular }} entity.

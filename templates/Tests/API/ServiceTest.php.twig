@@ -1,18 +1,66 @@
 <?php
-
+{% if entityInformation.canQuery ~%}
+use Anteris\Autotask\API\{{ entityName.plural }}\{{ entityName.singular }}Collection;
+use Anteris\Autotask\API\{{ entityName.plural }}\{{ entityName.singular }}Entity;
+{%~ endif %}
+use Anteris\Autotask\API\{{ entityName.plural }}\{{ entityName.singular }}Service;
+{%- if entityInformation.canQuery ~%}
 use Anteris\Autotask\API\{{ entityName.plural }}\{{ entityName.singular }}QueryBuilder;
+{%~ endif -%} 
 use Tests\AbstractTest;
 
 /**
- * @covers {{ entityName.singular }}Service
+ * Runs tests for {{ entityName.singular }}Service.
  */
 class {{ entityName.singular }}ServiceTest extends AbstractTest
 {
-{% if resource.canBeQueried %}
     /**
-     * @covers {{ entityName.singular }}Service::query
+     * @covers {{ entityName.singular }}Service
      */
-    public function testQuery()
+    public function test_service_creation()
+    {
+        $this->assertInstanceOf(
+            {{ entityName.singular }}Service::class,
+            $this->client->{{ entityName.plural|first|lower }}{{ entityName.plural|slice(1) }}()
+        );
+    }
+{% if entityInformation.canQuery and "Webhook" not in entityName.plural ~%}
+    /**
+     * @covers {{ entityName.singular }}Service
+     */
+    public function test_query_returns_collection()
+    {
+        $result = $this->client->{{ entityName.plural|first|lower }}{{ entityName.plural|slice(1) }}()->query()->where('id', 'exist')->records(1)->get();
+
+        // Make sure its a collection
+        $this->assertInstanceOf(
+            {{ entityName.singular }}Collection::class,
+            $result
+        );
+    }
+
+    /**
+     * @covers {{ entityName.singular }}Collection
+     */
+    public function test_collection_contains_{{ entityName.singularSnake }}_entities()
+    {
+        $result = $this->client->{{ entityName.plural|first|lower }}{{ entityName.plural|slice(1) }}()->query()->where('id', 'exist')->records(1)->get();
+
+        // Make sure the collection has entities
+        if (count($result) > 0) {
+            $this->assertInstanceOf(
+                {{ entityName.singular }}Entity::class,
+                $result->offsetGet(0)
+            );
+        } else {
+            $this->assertCount(0, $result);
+        }
+    }
+
+    /**
+     * @covers {{ entityName.singular }}Service
+     */
+    public function test_query_method_returns_query_builder()
     {
         $this->assertInstanceOf(
             {{ entityName.singular }}QueryBuilder::class,

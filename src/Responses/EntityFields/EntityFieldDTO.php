@@ -37,12 +37,12 @@ class EntityFieldDTO extends DataTransferObject
                 case 'integer':
                     $parameters['dataType'] = 'int';
                     break;
-                case 'long':
-                case 'short':
-                    $parameters['dataType'] = 'int';
-                    break;
                 case 'boolean':
                     $parameters['dataType'] = 'bool';
+                    break;
+                case 'long':
+                case 'short':
+                    $parameters['dataType'] = 'null';
                     break;
                 case 'double':
                 case 'decimal':
@@ -51,14 +51,27 @@ class EntityFieldDTO extends DataTransferObject
             }
         }
 
+        if (isset($parameters['name']) && $parameters['name'] == 'ContractID') {
+            $parameters['dataType'] = 'int';
+        }
+
         // This is a terrible block of code to deal with weird camel cased words
         if (isset($parameters['name'])) {
             $weirdWords = [
-                'RMM' => 'rmm',
-                'SIC' => 'sic',
+                'GLCode'    => 'glCode',
+                'MSRP'      => 'msrp',
+                'RMM'       => 'rmm',
+                'SGDA'      => 'sgda',
+                'SIC'       => 'sic',
+                'SKU'       => 'sku',
             ];
 
             foreach ($weirdWords as $original => $fixed) {
+                if ($parameters['name'] == $original) {
+                    $parameters['name'] = $fixed;
+                    continue;
+                }
+
                 if (substr($parameters['name'], 0, strlen($original)) !== $original) {
                     continue;
                 }

@@ -73,5 +73,13 @@ class SupportGenerator
             'UserDefinedFieldEntity.php',
             'Package/Support/UserDefinedFields/UserDefinedFieldEntity.php.twig'
         );
+
+        // Test Dependencies
+        $this->writer->resetContext();
+        $this->writer->createAndEnterDirectory('tests');
+        $this->writer->createFileFromTemplate(
+            'AbstractTest.php',
+            'Tests/AbstractTest.php.twig'
+        );
     }
 }
