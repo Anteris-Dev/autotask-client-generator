@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.0]
+## [v1.0.1] - 2020-09-01
+
+### Fixed
+- References to the QueryBuilder in the Service class doc block.
+
+## [v1.0.0] - 2020-09-01
 
 ### Added
 - FileWriter classes which handle any interaction with files for this package.
@@ -32,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Docs directory. This belongs elsewhere.
 
-## [v0.2.0]
+## [v0.2.0] - 2020-08-25
 
 ### Added
 - `count()` method on QueryBuilder classes.
@@ -43,11 +48,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Service classes return User Defined Fields as an array of UDF entities.
 
-## [v0.1.0]
+## [v0.1.0] - 2020-08-25
 
 ### Added
 - Initial generator files
 
+[v1.0.1]: https://github.com/Anteris-Dev/autotask-client-generator/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/Anteris-Dev/autotask-client-generator/compare/v0.2.0...v1.0.0
 [v0.2.0]: https://github.com/Anteris-Dev/autotask-client-generator/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/Anteris-Dev/autotask-client-generator/releases/tag/v0.1.0
