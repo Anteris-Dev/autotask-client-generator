@@ -4,8 +4,8 @@
     "require": {
         "symfony/console": "^5.1",
         "twig/twig": "^3.0",
-        "guzzlehttp/guzzle": "^6.3",
-        "illuminate/support": "^7.25",
+        "guzzlehttp/guzzle": "^6.3|^7.0",
+        "illuminate/support": "^7.0|^8.0",
         "spatie/data-transfer-object": "^2.3",
         "phpoption/phpoption": "^1.7",
         "vlucas/phpdotenv": "^4.0"
