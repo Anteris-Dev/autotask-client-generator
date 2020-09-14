@@ -2,12 +2,12 @@
 
 namespace Anteris\Autotask\API\{{ entityName.plural }};
 
-use Anteris\Autotask\HttpClient;
 use Anteris\Autotask\Support\EntityFields\EntityFieldCollection;
 use Anteris\Autotask\Support\EntityInformation\EntityInformationEntity;
 {%- if entityInformation.hasUserDefinedFields ~%}
 use Anteris\Autotask\Support\EntityUserDefinedFields\EntityUserDefinedFieldCollection;
 {%- endif ~%}
+use GuzzleHttp\Client;
 {%- if (entityInformation.canCreate or entityInformation.canUpdate) ~%}
 use GuzzleHttp\Psr7\Response;
 {%- endif ~%}
@@ -19,16 +19,16 @@ use GuzzleHttp\Psr7\Response;
 class {{ entityName.singular }}Service
 {
     /** @var Client An HTTP client for making requests to the Autotask API. */
-    protected HttpClient $client;
+    protected Client $client;
 
     /**
      * Instantiates the class.
      *
-     * @param  HttpClient  $client  The http client that will be used to interact with the API.
+     * @param  Client  $client  The http client that will be used to interact with the API.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function __construct(HttpClient $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }

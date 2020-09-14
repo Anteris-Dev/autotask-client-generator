@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - HttpClientFactory for creating Guzzle http clients
 
+### Changed
+- Paginator, QueryBuilder, and Service classes to use the Guzzle client
+
 ## [v1.0.3] - 2020-09-08
 
 ### Added

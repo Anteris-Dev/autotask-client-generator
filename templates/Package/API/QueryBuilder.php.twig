@@ -4,6 +4,7 @@ namespace Anteris\Autotask\API\{{ entityName.plural }};
 
 use Anteris\Autotask\HttpClient;
 use Exception;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 
@@ -13,8 +14,8 @@ use GuzzleHttp\Psr7\UriResolver;
  */
 class {{ entityName.singular }}QueryBuilder
 {
-    /** @var HttpClient An HTTP client for making API requests. */
-    protected HttpClient $client;
+    /** @var Client An HTTP client for making API requests. */
+    protected Client $client;
 
     /** @var array The filters to be applied to this query. */
     protected array $filter = [];
@@ -29,9 +30,7 @@ class {{ entityName.singular }}QueryBuilder
      * 
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function __construct(
-        HttpClient $client
-    )
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }
@@ -85,7 +84,7 @@ class {{ entityName.singular }}QueryBuilder
     public function get(): {{ entityName.singular }}Collection
     {
         $response = $this->client->get("{{ entityName.plural }}/query", [
-            'search' => json_encode( $this->toArray() )
+            'query' => [ 'search' => json_encode( $this->toArray() ) ]
         ]);
 
         return {{ entityName.singular }}Collection::fromResponse($response);
@@ -97,7 +96,7 @@ class {{ entityName.singular }}QueryBuilder
     public function paginate(): {{ entityName.singular }}Paginator
     {
         $response = $this->client->get("{{ entityName.plural }}/query", [
-            'search' => json_encode($this->toArray())
+            'query' => [ 'search' => json_encode($this->toArray()) ]
         ]);
 
         return new {{ entityName.singular }}Paginator($this->client, $response);
@@ -293,7 +292,7 @@ class {{ entityName.singular }}QueryBuilder
     public function __toString()
     {
         $uri = UriResolver::resolve(
-            $this->client->getClient()->getConfig()['base_uri'],
+            $this->client->getConfig()['base_uri'],
             new Uri('{{ entityName.plural }}/query')
         );
 

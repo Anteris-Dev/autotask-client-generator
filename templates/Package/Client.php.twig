@@ -5,6 +5,7 @@ namespace Anteris\Autotask;
 {%~ for service in services|sort %}
 use Anteris\Autotask\API\{{ service.plural }}\{{ service.singular }}Service;
 {%~ endfor %}
+use GuzzleHttp\Client as HttpClient;
 
 class Client
 {
@@ -17,19 +18,12 @@ class Client
     /**
      * Creates a new HTTP client with headers to authenticate with Autotask.
      *
-     * @param  string  $username         Autotask API user's username.
-     * @param  string  $secret           Autotask API user's password.
-     * @param  string  $integrationCode  Autotask API user's integration code.
-     * @param  string  $baseUri          Autotask API URL.
+     * @param  Client  $client  An instance of the Guzzle Http client.
+     * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function __construct(
-        string $username,
-        string $secret,
-        string $integrationCode,
-        string $baseUri
-    )
+    public function __construct(HttpClient $client)
     {
-        $this->client = new HttpClient($username, $secret, $integrationCode, $baseUri);
+        $this->client = $client;
     }
 {%~ for service in services|sort ~%}
     /**

@@ -2,8 +2,8 @@
 
 namespace Anteris\Autotask\API\{{ entityName.plural }};
 
-use Anteris\Autotask\HttpClient;
 use Anteris\Autotask\Support\Pagination\PageEntity;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 
 /**
@@ -14,8 +14,8 @@ class {{ entityName.singular }}Paginator
     /** @var {{ entityName.singular }}Collection Collection of {{ entityName.plural|lower }}. */
     public {{ entityName.singular }}Collection $collection;
 
-    /** @var HttpClient Http client for retrieving pages. */
-    protected HttpClient $client;
+    /** @var Client Http client for retrieving pages. */
+    protected Client $client;
 
     /** @var PageEntity Page data transfer object. */
     protected PageEntity $page;
@@ -23,12 +23,12 @@ class {{ entityName.singular }}Paginator
     /**
      * Sets up the paginator.
      *
-     * @param  HttpClient  $client    Http client for retrieving pages.
+     * @param  Client      $client    Http client for retrieving pages.
      * @param  Response    $response  Response from Http client.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function __construct(HttpClient $client, $response)
+    public function __construct(Client $client, $response)
     {
         $this->client = $client;
         $this->collection = {{ entityName.singular }}Collection::fromResponse($response);
@@ -70,7 +70,7 @@ class {{ entityName.singular }}Paginator
      */
     public function nextPage(): {{ entityName.singular }}Paginator
     {
-        $response = $this->client->getClient()->get($this->page->nextPageUrl);
+        $response = $this->client->get($this->page->nextPageUrl);
         return new static($this->client, $response);
     }
 
@@ -81,7 +81,7 @@ class {{ entityName.singular }}Paginator
      */
     public function prevPage (): {{ entityName.singular }}Paginator
     {
-        $response = $this->client->getClient()->get($this->page->prevPageUrl);
+        $response = $this->client->get($this->page->prevPageUrl);
         return new static($this->client, $response);
     }
 }
