@@ -69,6 +69,7 @@ class EntityFieldDTO extends DataTransferObject
             foreach ($weirdWords as $original => $fixed) {
                 if ($parameters['name'] == $original) {
                     $parameters['name'] = $fixed;
+
                     continue;
                 }
 

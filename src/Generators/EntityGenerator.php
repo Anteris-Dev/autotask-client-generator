@@ -47,23 +47,22 @@ class EntityGenerator
 
     /**
      * Creates a new entity class from the information passed.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(
         EntityNameDTO $entityName,
         EntityInformationDTO $entityInformation,
         EntityFieldCollection $fields
-    ): void
-    {
+    ): void {
         $this->writer->createFileFromTemplate(
             $entityName->singular . 'Entity.php',
             'Package/API/Entity.php.twig',
             [
-                'entityName' => $entityName,
+                'entityName'        => $entityName,
                 'entityInformation' => $entityInformation,
-                'fields' => $fields,
-                'imports' => $this->getImports($fields),
+                'fields'            => $fields,
+                'imports'           => $this->getImports($fields),
             ]
         );
 

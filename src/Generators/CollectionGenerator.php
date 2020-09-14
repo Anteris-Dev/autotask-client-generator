@@ -23,7 +23,7 @@ class CollectionGenerator
 
     /**
      * Creates a new collection class from the information passed.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(EntityNameDTO $entityName): void

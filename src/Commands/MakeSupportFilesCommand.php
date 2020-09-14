@@ -2,15 +2,14 @@
 
 namespace Anteris\Autotask\Generator\Commands;
 
-use Illuminate\Support\Env;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MakeSupportFilesCommand extends AbstractMakeCommand
 {
-    /** @var string The name of this command.  */
+    /** @var string The name of this command. */
     protected static $defaultName = 'make:support-files';
 
     /**
@@ -42,10 +41,12 @@ class MakeSupportFilesCommand extends AbstractMakeCommand
                 $error->getMessage() .
                 '</error>'
             );
+
             return Command::FAILURE;
         }
 
         $output->writeln('<info>Successfully re-generated support files!');
+
         return Command::SUCCESS;
     }
 }

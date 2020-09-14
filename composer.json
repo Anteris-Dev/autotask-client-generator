@@ -23,5 +23,8 @@
             "name": "Aidan Casey",
             "email": "aidan.casey@anteris.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16"
+    }
 }

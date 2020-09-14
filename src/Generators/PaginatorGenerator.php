@@ -23,7 +23,7 @@ class PaginatorGenerator
 
     /**
      * Creates a new paginator class from the information passed.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(EntityNameDTO $entityName): void

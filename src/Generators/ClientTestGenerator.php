@@ -25,7 +25,7 @@ class ClientTestGenerator
 
     /**
      * Creates tests for the client classes.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(): void
@@ -41,7 +41,7 @@ class ClientTestGenerator
         foreach ($files as $filename => $fileDetails) {
             $filename = pathinfo($filename, PATHINFO_FILENAME);
             if (substr($filename, -strlen('Service')) === 'Service') {
-                $name = substr($filename, 0, -strlen('Service'));
+                $name       = substr($filename, 0, -strlen('Service'));
                 $services[] = EntityNameDTO::fromString($name);
             }
         }

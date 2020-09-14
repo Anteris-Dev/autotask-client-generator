@@ -18,7 +18,7 @@ use Twig\Loader\FilesystemLoader;
 
 /**
  * This class is the parent generator for everything else.
- * 
+ *
  * @author Aidan Casey <aidan.casey@anteris.com>
  * @since  v0.1.0
  */
@@ -44,7 +44,7 @@ class Generator
 
     /**
      * Sets up the generator to start creating stuff.
-     * 
+     *
      * @param  string  $username        The API user's username.
      * @param  string  $secret          The API user's token.
      * @param  string  $outputDirectory The API URL to be used for requests.
@@ -63,10 +63,10 @@ class Generator
     ) {
         // Setup the cache first so we can use it for the Base URL
         $this->cacheWriter = new CacheWriter($outputDirectory);
-        $this->cache = $cache;
+        $this->cache       = $cache;
 
         // If not caching, do a quick clear of the cache in case something exists.
-        if (!$this->cache) {
+        if (! $this->cache) {
             $this->cacheWriter->resetCache();
         }
 
@@ -77,12 +77,12 @@ class Generator
             $recon = (new HttpClient)->get('https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation', [
                 'query' => [
                     'user' => $username,
-                ]
+                ],
             ]);
 
             $response = json_decode($recon->getBody(), true);
 
-            if (!isset($response['url'])) {
+            if (! isset($response['url'])) {
                 throw new Exception('Invalid base URL!');
             }
 
@@ -115,7 +115,7 @@ class Generator
 
     /**
      * Makes all the client files required by the API.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function makeClient(): void
@@ -126,13 +126,13 @@ class Generator
 
     /**
      * Make the resource files required by the passed entity.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function makeResource(string $entityName)
     {
         $resourceGenerator = new ResourceGenerator($this->templateWriter->newContext());
-        $entityName = EntityNameDTO::fromString($entityName);
+        $entityName        = EntityNameDTO::fromString($entityName);
 
         $resourceGenerator->make(
             $entityName,
@@ -143,7 +143,7 @@ class Generator
 
     /**
      * Makes all the support files (files used across multiple domains) required by the API.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function makeSupport()
@@ -154,14 +154,14 @@ class Generator
 
     /**
      * Retrieves the actions that are allowed by the passed entity.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function getEntityInformation(EntityNameDTO $entityName): EntityInformationDTO
     {
         $key = $entityName->singular . 'EntityInformation';
 
-        if (! $this->cacheWriter->inCache($key)) {            
+        if (! $this->cacheWriter->inCache($key)) {
             $this->cacheWriter->cache(
                 $key,
                 EntityInformationDTO::fromResponse(
@@ -175,7 +175,7 @@ class Generator
 
     /**
      * Retrieves the fields that belong to the passed entity.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     protected function getEntityFields(EntityNameDTO $entityName): EntityFieldCollection
@@ -183,7 +183,8 @@ class Generator
         $key = md5($entityName->singular . 'Fields');
 
         if (! $this->cacheWriter->inCache($key)) {
-            $this->cacheWriter->cache($key,
+            $this->cacheWriter->cache(
+                $key,
                 EntityFieldCollection::fromResponse(
                     $this->client->get($entityName->plural . '/entityInformation/fields')
                 )
@@ -195,7 +196,7 @@ class Generator
 
     /**
      * Clears the cache if caching is turned off.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function __destruct()

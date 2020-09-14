@@ -6,13 +6,13 @@ use Illuminate\Support\Env;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MakeEndpointCommand extends AbstractMakeCommand
 {
-    /** @var string The name of this command.  */
+    /** @var string The name of this command. */
     protected static $defaultName = 'make:endpoint';
 
     /**
@@ -44,6 +44,7 @@ class MakeEndpointCommand extends AbstractMakeCommand
                 $error->getMessage() .
                 '</error>'
             );
+
             return Command::FAILURE;
         }
 
@@ -56,6 +57,7 @@ class MakeEndpointCommand extends AbstractMakeCommand
 
         // Regenerate support classes
         $command = $this->getApplication()->find('make:support-files');
+
         return $command->run(
             new ArrayInput([
                 '-o' => $input->getOption('output') ?? Env::get('AUTOTASK_GENERATOR_DIRECTORY', getcwd()),

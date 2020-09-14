@@ -18,7 +18,7 @@ class EntityFieldCollection extends DataTransferObjectCollection
     {
         $response = json_decode($httpResponse->getBody(), true);
 
-        if(! isset($response['fields'])) {
+        if (! isset($response['fields'])) {
             throw new Exception('Invalid response from entityInformation/fields!');
         }
 

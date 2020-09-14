@@ -22,7 +22,7 @@ class TestDependencyGenerator
 
     /**
      * Creates test dependency classes.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(): void

@@ -372,7 +372,7 @@ class ServiceGenerator
     /**
      * This handles child endpoints that need to have specific parent paths
      * for creating / updating resources.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     protected function getParentInfo(EntityNameDTO $entityName): array
@@ -383,7 +383,7 @@ class ServiceGenerator
         ];
 
         if (isset($this->weirdEndpoints[$entityName->plural])) {
-            $array = $this->weirdEndpoints[$entityName->plural];
+            $array         = $this->weirdEndpoints[$entityName->plural];
             $array['path'] = str_replace(
                 '{{ ref | raw }}',
                 '$' . $array['ref'],
@@ -396,21 +396,20 @@ class ServiceGenerator
 
     /**
      * Creates a new service class from the information passed.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(
         EntityNameDTO $entityName,
         EntityInformationDTO $entityInformation
-    ): void
-    {
+    ): void {
         $this->writer->createFileFromTemplate(
             $entityName->singular . 'Service.php',
             'Package/API/Service.php.twig',
             [
-                'entityName' => $entityName,
+                'entityName'        => $entityName,
                 'entityInformation' => $entityInformation,
-                'parent' => $this->getParentInfo($entityName),
+                'parent'            => $this->getParentInfo($entityName),
             ]
         );
 

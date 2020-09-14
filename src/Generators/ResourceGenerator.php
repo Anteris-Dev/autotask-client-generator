@@ -26,7 +26,7 @@ class ResourceGenerator
     /**
      * This function actually oversees the making of required files for a specific
      * resource.
-     * 
+     *
      * @param  EntityNameDTO  $entityName  The entity's singular / plural name.
      * @param  EntityInformationDTO  $entityInformation  Information about what actions can be performed against the entity.
      * @param  EntityFieldCollection  $entityFields  A collection of fields the entity has.

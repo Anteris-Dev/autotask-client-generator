@@ -22,7 +22,7 @@ class SupportGenerator
 
     /**
      * Creates all the support classes.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(): void

@@ -14,7 +14,7 @@ class TemplateWriter extends FileWriter
 
     /**
      * Sets up the current class to begin writing template files!
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function __construct(string $baseDir, Environment $twig)
@@ -25,15 +25,14 @@ class TemplateWriter extends FileWriter
 
     /**
      * Creates a new file from an existing template.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function createFileFromTemplate(
         string $filename,
         string $template,
         array $replacements = []
-    ): void
-    {
+    ): void {
         $this->createFile(
             $filename,
             $this->twig->render($template, $replacements)

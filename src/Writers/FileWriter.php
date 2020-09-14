@@ -21,16 +21,17 @@ class FileWriter
 
     /**
      * Sets up the class to start working with this base directory.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function __construct(string $baseDir) {
+    public function __construct(string $baseDir)
+    {
         $this->originalBaseDir = $this->baseDir = rtrim($baseDir, '\\/') . '/';
     }
 
     /**
      * Creates a new directory.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function createDirectory(string $directory): void
@@ -46,14 +47,14 @@ class FileWriter
             true
         );
 
-        if (!$created) {
+        if (! $created) {
             throw new Exception("We were unable to create that directory!");
         }
     }
 
     /**
      * Creates a new file in this current context.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function createFile(string $filename, string $fileContent): void
@@ -66,14 +67,14 @@ class FileWriter
         $filepath = $this->baseDir . $filename;
         $created  = file_put_contents($filepath, $fileContent);
 
-        if (!$created) {
+        if (! $created) {
             throw new Exception("We were unable to create the file at $filepath!");
         }
     }
 
     /**
      * Creates the requested folder and the sets the current context to that.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function createAndEnterDirectory(string $directory): void
@@ -98,7 +99,7 @@ class FileWriter
 
     /**
      * Deletes the specified file.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function deleteFile(string $filename)
@@ -114,7 +115,7 @@ class FileWriter
 
     /**
      * Determines whether or not the passed directory exists in the current context.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function directoryExists(string $directory): bool
@@ -126,7 +127,7 @@ class FileWriter
 
     /**
      * Sets the current context to that of a sub-directory.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function enterDirectory(string $directory): void
@@ -140,7 +141,7 @@ class FileWriter
 
     /**
      * Determines whether or not the passed filename exists in the current context.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function fileExists(string $filename): bool
@@ -150,7 +151,7 @@ class FileWriter
 
     /**
      * Returns the base directory.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function getBaseDir(): string
@@ -160,7 +161,7 @@ class FileWriter
 
     /**
      * Returns the contents of the requested file.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function getFile(string $filename)
@@ -169,20 +170,21 @@ class FileWriter
     }
 
     /**
-     * Takes multiple paths and joins them. Trims slashes so that unecessary ones 
+     * Takes multiple paths and joins them. Trims slashes so that unecessary ones
      * are not present in the string and forces it to end in a forward slash.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function joinPaths(...$paths): string
     {
         $joinedPath = '';
-        $firstPath = true;
+        $firstPath  = true;
 
         foreach ($paths as $path) {
             if ($firstPath) {
                 $joinedPath = rtrim($path, '\\/') . '/';
-                $firstPath = false;
+                $firstPath  = false;
+
                 continue;
             }
 
@@ -196,7 +198,7 @@ class FileWriter
      * Creates a new instance of this writer with the original base directory.
      * This is useful for those scenarios where you would run resetContext() before
      * and after calling an action.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function newContext(): FileWriter
@@ -209,7 +211,7 @@ class FileWriter
 
     /**
      * Resets the current context to what it was originally.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function resetContext()
@@ -219,16 +221,17 @@ class FileWriter
 
     /**
      * Sets whether or not files should be overwritten.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function setOverwrite(bool $overwrite = true) {
+    public function setOverwrite(bool $overwrite = true)
+    {
         $this->overwrite = $overwrite;
     }
 
     /**
      * Deletes all the files in a directory (NOT RELATIVE).
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     protected function deleteFilesInDirectory(string $directory)

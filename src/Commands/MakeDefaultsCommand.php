@@ -6,13 +6,13 @@ use Anteris\Autotask\Generator\Helpers\Api;
 use Illuminate\Support\Env;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MakeDefaultsCommand extends AbstractMakeCommand
 {
-    /** @var string The name of this command.  */
+    /** @var string The name of this command. */
     protected static $defaultName = 'make:defaults';
 
     /**
@@ -25,7 +25,6 @@ class MakeDefaultsCommand extends AbstractMakeCommand
             ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Specifies whether any previous cached files should be ignored (still makes use of cache for efficiency, but clears afterward).')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrites previous classes if they exist.')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Sets the output directory for the generated classes.');
-
     }
 
     /**
@@ -47,6 +46,7 @@ class MakeDefaultsCommand extends AbstractMakeCommand
                 $error->getMessage() .
                 '</error>'
             );
+
             return Command::FAILURE;
         }
 
@@ -61,6 +61,7 @@ class MakeDefaultsCommand extends AbstractMakeCommand
 
         // Regenerate support classes
         $command = $this->getApplication()->find('make:support-files');
+
         return $command->run(
             new ArrayInput([
                 '-o' => $input->getOption('output') ?? Env::get('AUTOTASK_GENERATOR_DIRECTORY', getcwd()),

@@ -27,7 +27,7 @@ class EntityInformationDTO extends DataTransferObject
     {
         $response = json_decode($httpResponse->getBody(), true);
 
-        if (!isset($response['info'])) {
+        if (! isset($response['info'])) {
             throw new Exception('Invalid response from entityInformation!');
         }
 

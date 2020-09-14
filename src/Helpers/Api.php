@@ -12,13 +12,13 @@ class Api
         $response   = (new Client)->get('https://webservices14.autotask.net/ATServicesRest/swagger/docs/v1');
         $array      = json_decode($response->getBody(), true);
 
-        if(! isset($array['paths'])) {
+        if (! isset($array['paths'])) {
             throw new Exception('Invalid response!');
         }
 
         $paths = [];
 
-        foreach($array['paths'] as $path => $content) {
+        foreach ($array['paths'] as $path => $content) {
             if (
                 str_contains($path, '{parentId}') ||
                 str_contains($path, 'EntityInformation') ||

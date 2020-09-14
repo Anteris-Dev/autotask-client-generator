@@ -23,7 +23,7 @@ class QueryBuilderGenerator
 
     /**
      * Creates a new query builder class from the information passed.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(EntityNameDTO $entityName): void

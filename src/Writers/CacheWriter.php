@@ -3,7 +3,6 @@
 namespace Anteris\Autotask\Generator\Writers;
 
 use Exception;
-use Serializable;
 
 class CacheWriter extends FileWriter
 {
@@ -26,12 +25,12 @@ class CacheWriter extends FileWriter
 
     /**
      * Caches a file (in memory or preferably, in a file).
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function cache(string $pointer, $content)
     {
-        $pointer = md5($pointer);
+        $pointer               = md5($pointer);
         $this->cache[$pointer] = $content;
 
         // If the file caching fails, don't make a big stink.
@@ -44,7 +43,7 @@ class CacheWriter extends FileWriter
 
     /**
      * Deletes the cache from the system.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function clearCache()
@@ -55,7 +54,7 @@ class CacheWriter extends FileWriter
 
     /**
      * Retrieves a cached file from memory or file. If it does not exist, return false.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function getCached(string $pointer)
@@ -75,7 +74,7 @@ class CacheWriter extends FileWriter
 
     /**
      * Lightweight function to see if something is in the cache.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function inCache(string $pointer): bool
@@ -95,7 +94,7 @@ class CacheWriter extends FileWriter
 
     /**
      * Instead of deleting the cache entirely, recreates it.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function resetCache()

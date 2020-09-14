@@ -2,7 +2,7 @@
 <?php
 
 // Load the composer autoload
-foreach([__DIR__ . '/../../../autoload.php', __DIR__ . '/../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
+foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
     if (file_exists($file)) {
         require $file;
     }
@@ -17,8 +17,8 @@ if (file_exists(getenv('AUTOTASK_GENERATOR_DIRECTORY') . '/.env')) {
 }
 
 // Setup our console app
-$application = new Symfony\Component\Console\Application();
-$application->add( new Anteris\Autotask\Generator\Commands\MakeEndpointCommand() );
-$application->add( new Anteris\Autotask\Generator\Commands\MakeDefaultsCommand() );
-$application->add( new Anteris\Autotask\Generator\Commands\MakeSupportFilesCommand() );
+$application = new Symfony\Component\Console\Application;
+$application->add(new Anteris\Autotask\Generator\Commands\MakeEndpointCommand);
+$application->add(new Anteris\Autotask\Generator\Commands\MakeDefaultsCommand);
+$application->add(new Anteris\Autotask\Generator\Commands\MakeSupportFilesCommand);
 $application->run();

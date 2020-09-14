@@ -25,13 +25,16 @@ class ClientGenerator
 
     /**
      * Creates all the client classes.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(): void
     {
-        // This little bit iterates over our output directory
-        // to find out which service classes we have there currently.
+        /**
+         * This little bit iterates over our output directory to find out which
+         * service classes we have there currently. These are then used to generate
+         * the client with the required services.
+         */
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($this->writer->getBaseDir())
         );
@@ -40,13 +43,17 @@ class ClientGenerator
 
         foreach ($files as $filename => $fileDetails) {
             $filename = pathinfo($filename, PATHINFO_FILENAME);
+
             if (substr($filename, -strlen('Service')) === 'Service') {
-                $name = substr($filename, 0, -strlen('Service'));
+                $name       = substr($filename, 0, -strlen('Service'));
                 $services[] = EntityNameDTO::fromString($name);
             }
         }
 
-        // Now build the class
+        /**
+         * Now that we have the information we need, we can begin generating
+         * classes.
+         */
         $this->writer->createAndEnterDirectory('src');
         $this->writer->createFileFromTemplate(
             'Client.php',

@@ -24,21 +24,20 @@ class ServiceTestGenerator
 
     /**
      * Creates a new service test class from the information passed.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(
         EntityNameDTO $entityName,
         EntityInformationDTO $entityInformation
-    ): void
-    {
+    ): void {
         $this->writer->createAndEnterDirectory('tests/API/' . $entityName->plural);
 
         $this->writer->createFileFromTemplate(
             $entityName->singular . 'ServiceTest.php',
             'Tests/API/ServiceTest.php.twig',
             [
-                'entityName' => $entityName,
+                'entityName'        => $entityName,
                 'entityInformation' => $entityInformation,
             ]
         );
