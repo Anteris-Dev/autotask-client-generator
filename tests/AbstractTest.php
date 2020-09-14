@@ -23,7 +23,7 @@ abstract class AbstractTest extends TestCase
 
     /**
      * Sets up the classes for interacting with the client.
-     * 
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function setUp(): void
@@ -51,23 +51,23 @@ abstract class AbstractTest extends TestCase
         $secret     = getenv('AUTOTASK_API_SECRET');
         $ic         = getenv('AUTOTASK_API_INTEGRATION_CODE');
 
-        if (!$username) {
+        if (! $username) {
             throw new Exception('Unable to find find AUTOTASK_API_USERNAME env variable!');
         }
 
-        if (!$secret) {
+        if (! $secret) {
             throw new Exception('Unable to find find AUTOTASK_API_SECRET env variable!');
         }
 
-        if (!$ic) {
+        if (! $ic) {
             throw new Exception('Unable to find find AUTOTASK_API_INTEGRATION_CODE env variable!');
         }
 
         /**
          * Now we can store the values.
          */
-        $this->username = $username;
-        $this->secret = $secret;
+        $this->username        = $username;
+        $this->secret          = $secret;
         $this->integrationCode = $ic;
 
         /**
@@ -85,8 +85,8 @@ abstract class AbstractTest extends TestCase
          * Recurses our test directory and deletes everything in there.
          */
         $directory = self::TEST_DIR;
-        $it = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+        $it        = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files     = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
 
         foreach ($files as $file) {
             if ($file->isDir()) {

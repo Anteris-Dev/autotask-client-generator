@@ -3,13 +3,11 @@
 namespace Tests;
 
 use Anteris\Autotask\Generator\Generator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class GeneratorTest extends AbstractTest
 {
-    const TEST_DIR = __DIR__ . '/tests/';
-    const CLIENT   = self::TEST_DIR . 'src/Client.php';
+    const TEST_DIR            = __DIR__ . '/tests/';
+    const CLIENT              = self::TEST_DIR . 'src/Client.php';
     const HTTP_CLIENT_FACTORY = self::TEST_DIR . 'src/HttpClientFactory.php';
 
     /**
