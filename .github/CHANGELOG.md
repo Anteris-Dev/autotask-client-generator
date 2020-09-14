@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Paginator, QueryBuilder, and Service classes to use the Guzzle client
+- Method by which Guzzle requests are sent and responses are received
+- Way that entities are built from Guzzle responses
 
 ## [v1.0.3] - 2020-09-08
 

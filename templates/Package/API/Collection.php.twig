@@ -2,6 +2,8 @@
 
 namespace Anteris\Autotask\API\{{ entityName.plural }};
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Spatie\DataTransferObject\DataTransferObjectCollection;
 
@@ -28,22 +30,39 @@ class {{ entityName.singular }}Collection extends DataTransferObjectCollection
     }
 
     /**
-     * Creates an instance of this class from an Http response.
+     * Creates an instance of this collection from a Guzzle request / response.
      *
-     * @param  Response  $response  Http response.
+     * @param  Request   $request   The http request sent.
+     * @param  Response  $response  The http response received.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public static function fromResponse(Response $response): {{ entityName.singular }}Collection
+    public static function fromGuzzle(Request $request, Response $response): {{ entityName.singular }}Collection
     {
         $array = json_decode($response->getBody(), true);
 
-        if (isset($array['items']) === false) {
-            throw new \Exception('Missing items key in response.');
+        /**
+         * Here we are just making sure the item key exists so we can determine
+         * if a resource does not exist or if it was returned.
+         */
+        if (array_key_exists('items', $array) === false) {
+            throw new ClientException(
+                'Unable to find {{ entityName.plural }}. Expecting "items" key in response!',
+                $request,
+                $response
+            );
+        }
+
+        /**
+         * Instead of giving us a 404, Autotask sets the 'items' key to null. Here
+         * we return an empty collection if nothing was returned.
+         */
+        if ($array['items'] === null) {
+            return new static([]);
         }
 
         return new static(
-            {{ entityName.singular }}Entity::arrayOf($array['items'])
+            {{ entityName.singular }}Entity::arrayOf( $array['items'] )
         );
     }
 }

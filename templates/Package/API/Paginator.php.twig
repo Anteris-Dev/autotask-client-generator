@@ -4,6 +4,7 @@ namespace Anteris\Autotask\API\{{ entityName.plural }};
 
 use Anteris\Autotask\Support\Pagination\PageEntity;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
 /**
@@ -28,16 +29,18 @@ class {{ entityName.singular }}Paginator
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function __construct(Client $client, $response)
+    public function __construct(Client $client, Request $request, Response $response)
     {
         $this->client = $client;
-        $this->collection = {{ entityName.singular }}Collection::fromResponse($response);
-        $this->page = PageEntity::fromResponse($response);
+        $this->collection = {{ entityName.singular }}Collection::fromGuzzle(
+            $request,
+            $response
+        );
+        $this->page = PageEntity::fromGuzzle($request, $response);
     }
 
     /**
      * If a next page exists, returns true. Otherwise returns false.
-     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function hasNextPage(): bool
@@ -51,7 +54,6 @@ class {{ entityName.singular }}Paginator
 
     /**
      * If a previous page exists, returns true. Otherwise returns false.
-     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function hasPrevPage(): bool
@@ -65,23 +67,25 @@ class {{ entityName.singular }}Paginator
 
     /**
      * Retrieves and returns the next page.
-     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function nextPage(): {{ entityName.singular }}Paginator
     {
-        $response = $this->client->get($this->page->nextPageUrl);
-        return new static($this->client, $response);
+        $request  = new Request('GET', $this->page->nextPageUrl);
+        $response = $this->client->send($request);
+
+        return new static($this->client, $request, $response);
     }
 
     /**
      * Retrieves and returns the previous page.
-     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function prevPage (): {{ entityName.singular }}Paginator
     {
-        $response = $this->client->get($this->page->prevPageUrl);
-        return new static($this->client, $response);
+        $request  = new Request('GET', $this->page->prevPageUrl);
+        $response = $this->client->send($request);
+
+        return new static($this->client, $request, $response);
     }
 }

@@ -5,6 +5,8 @@ namespace Anteris\Autotask\API\{{ entityName.plural }};
 use Anteris\Autotask\HttpClient;
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 
@@ -39,19 +41,36 @@ class {{ entityName.singular }}QueryBuilder
      * Runs the query but returns an integer specifying the number of records
      * that would be returned if executed.
      */
-     public function count(): int
-     {
-         $response = $this->client->get("{{ entityName.plural }}/query/count", [
-             'search' => json_encode( $this->toArray() )
-         ]);
+    public function count(): int
+    {
+        /**
+         * Perform the request against the count endpoint to get the number of
+         * records executing the actual request would return.
+         */
+        $request  = new Request(
+            'GET',
+            '{{ entityName.plural }}/query/count?search=' . json_encode( $this->toArray() )
+        );
+        $response = $this->client->send($request);
 
-         $responseArray = json_decode($response->getBody(), true);
+        /**
+         * Now convert the response to an array and make sure the required keys
+         * are there.
+         */
+        $array = json_decode($response->getBody(), true);
 
-         if (! isset($responseArray['queryCount'])) {
-             throw new Exception('Missing queryCount key in response!');
-         }
+        if (array_key_exists('queryCount', $array) === false) {
+            throw new ClientException(
+                'Expecting "queryCount" key in response!',
+                $request,
+                $response
+            );
+        }
 
-         return $responseArray['queryCount'];
+        /**
+         * If the response checks out, let's pass it on to the developer.
+         */
+        return $array['queryCount'];
     }
 
     /**
@@ -63,17 +82,33 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function loop(callable $callback)
     {
+        /**
+         * Grab the first page of records.
+         */
         $currentPage = $this->paginate();
 
+        /**
+         * Until we find out there are no more records, keep paging through
+         * Autotask.
+         */
         while(True) {
+            /**
+             * Here we are going to execute the callback for every record returned.
+             */
             foreach ($currentPage->collection as $collectionItem) {
                 $callback($collectionItem);
             }
 
+            /**
+             * If there are no more pages, break this insane loop.
+             */
             if (! $currentPage->hasNextPage()) {
                 break;
             }
 
+            /**
+             * Set ourselves to the next page for the next iteration of this loop.
+             */
             $currentPage = $currentPage->nextPage();
         }
     }
@@ -83,11 +118,13 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function get(): {{ entityName.singular }}Collection
     {
-        $response = $this->client->get("{{ entityName.plural }}/query", [
-            'query' => [ 'search' => json_encode( $this->toArray() ) ]
-        ]);
+        $request  = new Request(
+            'GET',
+            '{{ entityName.plural }}/query?search=' . json_encode( $this->toArray() )
+        );
+        $response = $this->client->send($request);
 
-        return {{ entityName.singular }}Collection::fromResponse($response);
+        return {{ entityName.singular }}Collection::fromGuzzle($request, $response);
     }
 
     /**
@@ -95,11 +132,17 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function paginate(): {{ entityName.singular }}Paginator
     {
-        $response = $this->client->get("{{ entityName.plural }}/query", [
-            'query' => [ 'search' => json_encode($this->toArray()) ]
-        ]);
+        $request  = new Request(
+            'GET',
+            '{{ entityName.plural }}/query?search=' . json_encode( $this->toArray() )
+        );
+        $response = $this->client->send($request);
 
-        return new {{ entityName.singular }}Paginator($this->client, $response);
+        return new {{ entityName.singular }}Paginator(
+            $this->client,
+            $request,
+            $response
+        );
     }
 
     /**

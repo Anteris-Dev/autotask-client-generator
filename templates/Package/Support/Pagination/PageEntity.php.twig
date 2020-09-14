@@ -2,7 +2,8 @@
 
 namespace Anteris\Autotask\Support\Pagination;
 
-use Exception;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Spatie\DataTransferObject\DataTransferObject;
 
@@ -17,20 +18,31 @@ class PageEntity extends DataTransferObject
     public ?string $nextPageUrl;
 
     /**
-     * Creates a new PageEntity from an http response.
+     * Creates a new PageEntity from a Guzzle request / response.
      * 
-     * @param  Response  $response  The http response to build the entity from.
+     * @param  Request   $request   The http request sent.
+     * @param  Response  $response  The http response received.
      * 
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public static function fromResponse(Response $response): PageEntity
+    public static function fromGuzzle(Request $request, Response $response): PageEntity
     {
         $array = json_decode($response->getBody(), true);
 
-        if(! isset($array['pageDetails'])) {
-            throw new Exception('Missing pageDetails key in response!');
+        /**
+         * Here we are just making sure the pageDetails key exists.
+         */
+        if (array_key_exists('pageDetails', $array) === false) {
+            throw new ClientException(
+                'Expecting "pageDetails" key in response!',
+                $request,
+                $response
+            );
         }
 
+        /**
+         * And here we finally return the result.
+         */
         return new static($array['pageDetails']);
     }
 }

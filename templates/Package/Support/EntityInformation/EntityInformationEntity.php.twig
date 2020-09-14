@@ -2,7 +2,7 @@
 
 namespace Anteris\Autotask\Support\EntityInformation;
 
-use Exception;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Spatie\DataTransferObject\DataTransferObject;
 
@@ -24,18 +24,26 @@ class EntityInformationEntity extends DataTransferObject
     public bool $supportsWebhookCallouts;
 
     /**
-     * Creates a new EntityInformationEntity from an http response.
-     * 
-     * @param  Response  $response  The http response to build the entity from.
-     * 
+     * Creates an instance of this class from a Guzzle request / response.
+     *
+     * @param  Request   $request   The http request sent.
+     * @param  Response  $response  The http response received.
+     *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public static function fromResponse(Response $response): EntityInformationEntity
+    public static function fromGuzzle(Request $request, Response $response): EntityInformationEntity
     {
         $array = json_decode($response->getBody(), true);
 
-        if(! isset($array['info'])) {
-            throw new Exception('Missing info key in response!');
+        /**
+         * Here we are just making sure the info key exists.
+         */
+        if (array_key_exists('info', $array) === false) {
+            throw new ClientException(
+                'Unable to find entity information for {{ entityName.plural }}. Expecting "info" key in response!',
+                $request,
+                $response
+            );
         }
 
         return new static($array['info']);

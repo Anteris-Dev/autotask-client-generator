@@ -9,6 +9,7 @@ use Anteris\Autotask\Support\EntityUserDefinedFields\EntityUserDefinedFieldColle
 {%- endif ~%}
 use GuzzleHttp\Client;
 {%- if (entityInformation.canCreate or entityInformation.canUpdate) ~%}
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 {%- endif ~%}
 
@@ -40,18 +41,19 @@ class {{ entityName.singular }}Service
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function create({{ entityName.singular }}Entity $resource): Response
+    public function create({{ entityName.singular }}Entity $resource)
     {
         {%~ if parent.ref %}
         ${{ parent.ref }} = $resource->{{ parent.ref }};
         {%~ endif %}
-        return $this->client->post("
+        $request  = new Request('POST', "
             {%- if parent.path -%}
                 {{- parent.path | raw -}}
             {%- else -%}
                 {{- entityName.plural -}}
             {%- endif -%}
-            ", $resource->toArray());
+            ", [], $resource->toArray());
+        $response = $this->client->send($request);
     }
 {%~ endif -%}
 
@@ -71,13 +73,14 @@ class {{ entityName.singular }}Service
             int ${{ parent.ref }},
         {%- endif -%} int $id): void
     {
-        $this->client->delete("
+        $request  = new Request('DELETE', "
             {%- if parent.path -%}
                 {{- parent.path | raw -}}
             {%- else -%}
                 {{- entityName.plural -}}
             {%- endif -%}
         /$id");
+        $response = $this->client->send($request);
     }
 {%~ endif -%}
 
@@ -91,8 +94,12 @@ class {{ entityName.singular }}Service
      */
     public function findById(int $id): {{ entityName.singular }}Entity
     {
-        return {{ entityName.singular }}Entity::fromResponse(
-            $this->client->get("{{ entityName.plural }}/$id")
+        $request  = new Request('GET', "{{ entityName.plural }}/$id");
+        $response = $this->client->send($request);
+
+        return {{ entityName.singular }}Entity::fromGuzzle(
+            $request,
+            $response
         );
     }
 {%~ endif ~%}
@@ -105,9 +112,10 @@ class {{ entityName.singular }}Service
      */
     public function getEntityFields(): EntityFieldCollection
     {
-        return EntityFieldCollection::fromResponse(
-            $this->client->get("{{ entityName.plural }}/entityInformation/fields")
-        );
+        $request  = new Request('GET', '{{ entityName.plural }}/entityInformation/fields');
+        $response = $this->client->send($request);
+
+        return EntityFieldCollection::fromGuzzle($request, $response);
     }
 
     /**
@@ -119,9 +127,10 @@ class {{ entityName.singular }}Service
      */
     public function getEntityInformation(): EntityInformationEntity
     {
-        return EntityInformationEntity::fromResponse(
-            $this->client->get("{{ entityName.plural }}/entityInformation")
-        );
+        $request  = new Request('GET', '{{ entityName.plural }}/entityInformation');
+        $response = $this->client->send($request);
+
+        return EntityInformationEntity::fromGuzzle($request, $response);
     }
 {%~ if entityInformation.hasUserDefinedFields ~%}
     /**
@@ -133,9 +142,10 @@ class {{ entityName.singular }}Service
      */
     public function getEntityUserDefinedFields(): EntityUserDefinedFieldCollection
     {
-        return EntityUserDefinedFieldCollection::fromResponse(
-            $this->client->get("{{ entityName.plural }}/entityInformation/userDefinedFields")
-        );
+        $request  = new Request('{{ entityName.plural }}/entityInformation/userDefinedFields');
+        $response = $this->client->send($request);
+
+        return EntityUserDefinedFieldCollection::fromGuzzle($request, $response);
     }
 {%~ endif -%}
 {%- if entityInformation.canQuery ~%}
@@ -160,18 +170,19 @@ class {{ entityName.singular }}Service
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function update({{ entityName.singular }}Entity $resource): Response
+    public function update({{ entityName.singular }}Entity $resource)
     {
         {%~ if parent.ref %}
         ${{ parent.ref }} = $resource->{{ parent.ref }};
         {%~ endif %}
-        return $this->client->put("
+        $request  = new Request('PUT', "
             {%- if parent.path -%}
                 {{- parent.path | raw -}}
             {%- else -%}
                 {{- entityName.plural -}}
             {%- endif -%}
-        ", $resource->toArray());
+        ", [], $resource->toArray());
+        $response = $this->client->send($request);
     }
 {%~ endif -%}
 }

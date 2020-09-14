@@ -2,6 +2,7 @@
 
 namespace Anteris\Autotask\Support\EntityUserDefinedFields;
 
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Spatie\DataTransferObject\DataTransferObjectCollection;
 
@@ -28,20 +29,39 @@ class EntityUserDefinedFieldCollection extends DataTransferObjectCollection
     }
 
     /**
-     * Creates an instance of this class from an Http response.
+     * Creates an instance of this class from a Guzzle request / response.
      *
-     * @param  Response  $response  Http response.
+     * @param  Request   $request   The http request sent.
+     * @param  Response  $response  The http response received.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public static function fromResponse(Response $response): EntityUserDefinedFieldCollection
+    public static function fromGuzzle(Request $request, Response $response): EntityUserDefinedFieldCollection
     {
         $array = json_decode($response->getBody(), true);
 
-        if (isset($array['fields']) === false) {
-            throw new \Exception('Missing fields key in response.');
+        /**
+         * Here we are just making sure the fields key exists.
+         */
+        if (array_key_exists('fields', $array) === false) {
+            throw new ClientException(
+                'Unable to find entity udfs for {{ entityName.plural }}. Expecting "fields" key in response!',
+                $request,
+                $response
+            );
         }
 
+        /**
+         * Here we will check if the fields key is null and just return an empty
+         * collection if so.
+         */
+        if ($array['fields'] === null) {
+            return new static([]);
+        }
+
+        /**
+         * And here we finally return the result.
+         */
         return new static(
             EntityUserDefinedFieldEntity::arrayOf($array['fields'])
         );
