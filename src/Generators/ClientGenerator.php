@@ -59,5 +59,9 @@ class ClientGenerator
             'HttpClient.php',
             'Package/HttpClient.php.twig'
         );
+        $this->writer->createFileFromTemplate(
+            'HttpClientFactory.php',
+            'Package/HttpClientFactory.php.twig'
+        );
     }
 }

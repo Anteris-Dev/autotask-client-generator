@@ -1,0 +1,147 @@
+<?php
+
+namespace Anteris\Autotask;
+
+use Exception;
+use GuzzleHttp\Client;
+
+/**
+ * Handles the creation of a Guzzle client to be used by the API client.
+ */
+class HttpClientFactory
+{
+    /**
+     * Creates an http client for you based on the credentials passed.
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public static function fromCredentials(
+        string $username,
+        string $secret,
+        string $integrationCode,
+        string $baseUri = null
+    )
+    {
+        /**
+         * First things first - If we don't have a base uri, get one.
+         */
+        if ($baseUri === null) {
+            $baseUri = self::resolveBaseUri( $username );
+        }
+
+        /**
+         * Now we are going to build a Guzzle client with the data we have
+         */
+
+        // Ensure the base URI has a version number on the end
+        $baseUri = str_replace(['/V1.0', '/v1.0'], '', $baseUri);
+        $baseUri = rtrim($baseUri, '/') . '/v1.0/';
+
+        // Now create the client
+        return new Client([
+            'base_uri' => $baseUri,
+            'headers' => [
+                'Username'              => $username,
+                'Secret'                => $secret,
+                'APIIntegrationcode'    => $integrationCode,
+                'Content-Type'          => 'application/json',
+            ],
+            'http_errors' => true,
+        ]);
+    }
+
+    /**
+     * Creates an http client for you based on an existing Guzzle client.
+     *
+     * Because Guzzle clients are immutable, we basically just pickup your
+     * configuration and build a client based on it. If credentials are also
+     * passed, we will build the headers for you (unless they are already
+     * specified).
+     * 
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    public static function fromClient(
+        Client $client,
+        string $username = null,
+        string $secret = null,
+        string $integrationCode = null,
+        string $baseUri = null
+    )
+    {
+        /**
+         * First step, figure out if we have to add on authentication information
+         */
+        $config = [
+            'headers' => [],
+        ];
+
+        if ($username !== null) {
+            $config['headers']['Username'] = $username;
+        }
+
+        if ($secret !== null) {
+            $config['headers']['Secret'] = $secret;
+        }
+
+        if ($integrationCode !== null) {
+            $config['headers']['APIIntegrationcode'] = $integrationCode;
+        }
+
+        // Do some double checks for the base uri
+        if ($username !== null && $baseUri === null) {
+            $baseUri = self::resolveBaseUri($username);
+        }
+
+        // Ensure the base URI has a version number on the end
+        if ($baseUri !== null) {
+            $baseUri = str_replace(['/V1.0', '/v1.0'], '', $baseUri);
+            $baseUri = rtrim($baseUri, '/') . '/v1.0/';
+
+            $config['base_uri'] = $baseUri;
+        }
+
+        /**
+         * Second step, get their configuration and merge it all
+         */
+        $clientConfig   = $client->getConfig() ?? [];
+        $config         = array_replace_recursive($config, $clientConfig);
+
+        /**
+         * Third step, respond with our built client
+         */
+        return new Client($config);
+    }
+
+    /**
+     * Takes a username and determines the base URI for that user.
+     * @author Aidan Casey <aidan.casey@anteris.com>
+     */
+    protected static function resolveBaseUri(string $username): string
+    {
+        $recon = (new Client)->get(
+            'https://webservices.autotask.net/atservicesrest/v1.0/zoneInformation',
+            [
+                'query' => [
+                    'user' => $username,
+                ]
+            ]
+        );
+
+        $response = json_decode($recon->getBody(), true);
+
+        // If errors were returned, throw an exception
+        if (isset($response['errors'])) {
+            throw new Exception(
+                'Error getting base uri: ' . $response['errors'][0]
+            );
+        }
+
+        // If the base uri is not included, throw an exception
+        if (!isset($response['url'])) {
+            throw new Exception(
+                'Error getting base uri: the response was malformed.'
+            );
+        }
+
+        return $response['url'];
+    }
+}
