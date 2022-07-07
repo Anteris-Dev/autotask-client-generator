@@ -22,7 +22,9 @@ class Api
             if (
                 str_contains($path, '{parentId}') ||
                 str_contains($path, 'EntityInformation') ||
+                str_contains($path, 'Modules') ||
                 str_contains($path, 'ThresholdInformation') ||
+                str_contains($path, 'Version') ||
                 str_contains($path, 'ZoneInformation')
             ) {
                 continue;

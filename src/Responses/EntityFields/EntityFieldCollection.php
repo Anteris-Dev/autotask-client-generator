@@ -4,12 +4,12 @@ namespace Anteris\Autotask\Generator\Responses\EntityFields;
 
 use Exception;
 use GuzzleHttp\Psr7\Response;
-use Spatie\DataTransferObject\DataTransferObjectCollection;
+use Illuminate\Support\Collection;
 
 /**
  * Represents a collection of fields.
  */
-class EntityFieldCollection extends DataTransferObjectCollection
+class EntityFieldCollection extends Collection
 {
     /**
      * Create a new collection from a GuzzleResponse.

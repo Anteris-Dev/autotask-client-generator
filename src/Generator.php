@@ -161,7 +161,7 @@ class Generator
     {
         $key = $entityName->singular . 'EntityInformation';
 
-        if (! $this->cacheWriter->inCache($key)) {            
+        if (! $this->cacheWriter->inCache($key)) {
             $this->cacheWriter->cache(
                 $key,
                 EntityInformationDTO::fromResponse(
