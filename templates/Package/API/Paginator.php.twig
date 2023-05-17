@@ -78,7 +78,7 @@ class {{ entityName.singular }}Paginator
         if(is_null($this->postParams)){
             $response = $this->client->getClient()->get($this->page->nextPageUrl);
         }else{
-            $response = $this->client->getClient()->post($this->page->nextPageUrl, $this->postParams);
+            $response = $this->client->getClient()->post($this->page->nextPageUrl, ['json' => $this->postParams]);
         }
 
         return new static($this->client, $response);
@@ -94,7 +94,7 @@ class {{ entityName.singular }}Paginator
         if(is_null($this->postParams)){
             $response = $this->client->getClient()->get($this->page->prevPageUrl);
         }else{
-            $response = $this->client->getClient()->post($this->page->prevPageUrl, $this->postParams);
+            $response = $this->client->getClient()->post($this->page->prevPageUrl, ['json' => $this->postParams]);
         }
 
         return new static($this->client, $response);
