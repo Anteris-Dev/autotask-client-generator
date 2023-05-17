@@ -23,23 +23,23 @@ class {{ entityName.singular }}QueryBuilder
     protected int $records;
 
     /** @var bool Use POST for /query requests. */
-    protected bool $usePostAsGet;
+    protected bool $usePostForQuery;
 
     /**
      * Sets up the class to perform a query.
      * 
      * @param  HttpClient  $client  The http client to execute API requests.
-     * @param  bool    $usePostAsGet     Use POST for /query requests.
+     * @param  bool    $usePostForQuery     Use POST for /query requests.
      * 
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function __construct(
         HttpClient $client,
-        bool $usePostAsGet = false
+        bool $usePostForQuery = false
     )
     {
         $this->client = $client;
-        $this->usePostAsGet = $usePostAsGet;
+        $this->usePostForQuery = $usePostForQuery;
     }
 
     /**
@@ -48,7 +48,7 @@ class {{ entityName.singular }}QueryBuilder
      */
      public function count(): int
      {
-        if($this->usePostAsGet){
+        if($this->usePostForQuery){
             $response = $this->client->post("{{ entityName.plural }}/query/count", $this->toArray());
         }else{
             $response = $this->client->get("{{ entityName.plural }}/query/count", [
@@ -98,7 +98,7 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function get(): {{ entityName.singular }}Collection
     {
-        if($this->usePostAsGet){
+        if($this->usePostForQuery){
             $response = $this->client->post("{{ entityName.plural }}/query", $this->toArray());
         }else{
             $response = $this->client->get("{{ entityName.plural }}/query", [
@@ -114,7 +114,7 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function paginate(): {{ entityName.singular }}Paginator
     {
-        if($this->usePostAsGet){
+        if($this->usePostForQuery){
             $response = $this->client->post("{{ entityName.plural }}/query", $this->toArray());
         }else{
             $response = $this->client->get("{{ entityName.plural }}/query", [

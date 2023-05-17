@@ -22,20 +22,20 @@ class {{ entityName.singular }}Service
     protected HttpClient $client;
 
     /** @var bool Use POST for /query requests. */
-    protected bool $usePostAsGet;
+    protected bool $usePostForQuery;
 
     /**
      * Instantiates the class.
      *
      * @param  HttpClient  $client  The http client that will be used to interact with the API.
-     * @param  bool    $usePostAsGet     Use POST for /query requests.
+     * @param  bool    $usePostForQuery     Use POST for /query requests.
      *
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    public function __construct(HttpClient $client, bool $usePostAsGet = false)
+    public function __construct(HttpClient $client, bool $usePostForQuery = false)
     {
         $this->client = $client;
-        $this->usePostAsGet = $usePostAsGet;
+        $this->usePostForQuery = $usePostForQuery;
     }
 {%~ if entityInformation.canCreate ~%}
     /**
@@ -153,7 +153,7 @@ class {{ entityName.singular }}Service
      */
     public function query(): {{ entityName.singular }}QueryBuilder
     {
-        return new {{ entityName.singular }}QueryBuilder($this->client, $this->usePostAsGet);
+        return new {{ entityName.singular }}QueryBuilder($this->client, $this->usePostForQuery);
     }
 {%~ endif -%}
 
