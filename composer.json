@@ -2,6 +2,7 @@
     "name": "anteris-dev/autotask-client-generator",
     "description": "This package is the brains behind the Autotask API client. It generates each service class using the Autotask API as its guide.",
     "require": {
+        "php": "^8.2",
         "symfony/console": "^5.1",
         "twig/twig": "^3.0",
         "guzzlehttp/guzzle": "^6.3|^7.0",

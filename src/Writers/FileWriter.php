@@ -5,33 +5,18 @@ namespace Anteris\Autotask\Generator\Writers;
 use DirectoryIterator;
 use Exception;
 
-/**
- * This class exposes an API for writing files.
- */
 class FileWriter
 {
-    /** @var string The root level directory we should be operating under the context of. */
     protected string $baseDir;
-
-    /** @var string Keeps record of the original base directory. */
     protected string $originalBaseDir;
-
-    /** @var bool Determines whether or not the files present should be overwritten. */
     protected bool $overwrite = false;
 
-    /**
-     * Sets up the class to start working with this base directory.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function __construct(string $baseDir) {
         $this->originalBaseDir = $this->baseDir = rtrim($baseDir, '\\/') . '/';
     }
 
     /**
-     * Creates a new directory.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
+     * @throws Exception
      */
     public function createDirectory(string $directory): void
     {
@@ -52,9 +37,7 @@ class FileWriter
     }
 
     /**
-     * Creates a new file in this current context.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
+     * @throws Exception
      */
     public function createFile(string $filename, string $fileContent): void
     {
@@ -72,9 +55,7 @@ class FileWriter
     }
 
     /**
-     * Creates the requested folder and the sets the current context to that.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
+     * @throws Exception
      */
     public function createAndEnterDirectory(string $directory): void
     {
@@ -83,9 +64,9 @@ class FileWriter
     }
 
     /**
-     * Deletes a directory.
+     * @throws Exception
      */
-    public function deleteDirectory(string $directory)
+    public function deleteDirectory(string $directory): void
     {
         $deleted = $this->deleteFilesInDirectory(
             $this->joinPaths($this->baseDir, $directory)
@@ -97,11 +78,9 @@ class FileWriter
     }
 
     /**
-     * Deletes the specified file.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
+     * @throws Exception
      */
-    public function deleteFile(string $filename)
+    public function deleteFile(string $filename): void
     {
         $deleted = unlink(
             $this->baseDir . $filename
@@ -112,11 +91,6 @@ class FileWriter
         }
     }
 
-    /**
-     * Determines whether or not the passed directory exists in the current context.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function directoryExists(string $directory): bool
     {
         return is_dir(
@@ -125,9 +99,7 @@ class FileWriter
     }
 
     /**
-     * Sets the current context to that of a sub-directory.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
+     * @throws Exception
      */
     public function enterDirectory(string $directory): void
     {
@@ -138,42 +110,21 @@ class FileWriter
         $this->baseDir = $this->joinPaths($this->baseDir, $directory);
     }
 
-    /**
-     * Determines whether or not the passed filename exists in the current context.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function fileExists(string $filename): bool
     {
         return file_exists($this->baseDir . $filename);
     }
 
-    /**
-     * Returns the base directory.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function getBaseDir(): string
     {
         return $this->baseDir;
     }
 
-    /**
-     * Returns the contents of the requested file.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function getFile(string $filename)
+    public function getFile(string $filename): false|string
     {
         return file_get_contents($this->baseDir . $filename);
     }
 
-    /**
-     * Takes multiple paths and joins them. Trims slashes so that unecessary ones 
-     * are not present in the string and forces it to end in a forward slash.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function joinPaths(...$paths): string
     {
         $joinedPath = '';
@@ -192,13 +143,6 @@ class FileWriter
         return $joinedPath;
     }
 
-    /**
-     * Creates a new instance of this writer with the original base directory.
-     * This is useful for those scenarios where you would run resetContext() before
-     * and after calling an action.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function newContext(): FileWriter
     {
         $context = new static($this->originalBaseDir);
@@ -207,31 +151,17 @@ class FileWriter
         return $context;
     }
 
-    /**
-     * Resets the current context to what it was originally.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function resetContext()
+    public function resetContext(): void
     {
         $this->baseDir = $this->originalBaseDir;
     }
 
-    /**
-     * Sets whether or not files should be overwritten.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function setOverwrite(bool $overwrite = true) {
+    public function setOverwrite(bool $overwrite = true): void
+    {
         $this->overwrite = $overwrite;
     }
 
-    /**
-     * Deletes all the files in a directory (NOT RELATIVE).
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    protected function deleteFilesInDirectory(string $directory)
+    protected function deleteFilesInDirectory(string $directory): bool
     {
         foreach (new DirectoryIterator($directory) as $item) {
             if ($item->isDot()) {

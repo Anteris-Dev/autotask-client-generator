@@ -3,33 +3,20 @@
 namespace Anteris\Autotask\Generator\Writers;
 
 use Exception;
-use Serializable;
 
 class CacheWriter extends FileWriter
 {
-    /** @var array Stores cached items in memory. */
     protected array $cache = [];
 
-    /**
-     * Sets up the class to start writing to the cache.
-     */
     public function __construct(string $baseDir)
     {
         parent::__construct($baseDir);
-        
-        // Ensure we always overwrite
-        $this->overwrite = true;
 
-        // Create the cache directory
+        $this->overwrite = true;
         $this->createAndEnterDirectory('.cache');
     }
 
-    /**
-     * Caches a file (in memory or preferably, in a file).
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function cache(string $pointer, $content)
+    public function cache(string $pointer, $content): void
     {
         $pointer = md5($pointer);
         $this->cache[$pointer] = $content;
@@ -42,23 +29,13 @@ class CacheWriter extends FileWriter
         }
     }
 
-    /**
-     * Deletes the cache from the system.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function clearCache()
+    public function clearCache(): void
     {
         $this->enterDirectory('../');
         $this->deleteDirectory('.cache');
     }
 
-    /**
-     * Retrieves a cached file from memory or file. If it does not exist, return false.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function getCached(string $pointer)
+    public function getCached(string $pointer): string|false
     {
         $pointer = md5($pointer);
 
@@ -73,16 +50,11 @@ class CacheWriter extends FileWriter
         return false;
     }
 
-    /**
-     * Lightweight function to see if something is in the cache.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function inCache(string $pointer): bool
     {
         $pointer = md5($pointer);
 
-        if (isset($this->cache[$pointer]) == true) {
+        if (isset($this->cache[$pointer])) {
             return true;
         }
 
@@ -93,12 +65,7 @@ class CacheWriter extends FileWriter
         return false;
     }
 
-    /**
-     * Instead of deleting the cache entirely, recreates it.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function resetCache()
+    public function resetCache(): void
     {
         $this->clearCache();
         $this->createAndEnterDirectory('.cache');

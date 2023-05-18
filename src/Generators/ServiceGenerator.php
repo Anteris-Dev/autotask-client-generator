@@ -3,12 +3,9 @@
 namespace Anteris\Autotask\Generator\Generators;
 
 use Anteris\Autotask\Generator\Responses\EntityInformation\EntityInformationDTO;
-use Anteris\Autotask\Generator\Support\Entities\EntityNameDTO;
+use Anteris\Autotask\Generator\Support\ValueObjects\EntityName;
 use Anteris\Autotask\Generator\Writers\TemplateWriter;
 
-/**
- * This class is in charge off all file generation for Service classes.
- */
 class ServiceGenerator
 {
     /**
@@ -375,7 +372,7 @@ class ServiceGenerator
      * 
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
-    protected function getParentInfo(EntityNameDTO $entityName): array
+    protected function getParentInfo(EntityName $entityName): array
     {
         $array = [
             'path' => false,
@@ -400,7 +397,7 @@ class ServiceGenerator
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function make(
-        EntityNameDTO $entityName,
+        EntityName           $entityName,
         EntityInformationDTO $entityInformation
     ): void
     {

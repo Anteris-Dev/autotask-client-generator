@@ -7,52 +7,28 @@ use Anteris\Autotask\Generator\Generators\ResourceGenerator;
 use Anteris\Autotask\Generator\Generators\SupportGenerator;
 use Anteris\Autotask\Generator\Responses\EntityFields\EntityFieldCollection;
 use Anteris\Autotask\Generator\Responses\EntityInformation\EntityInformationDTO;
-use Anteris\Autotask\Generator\Support\Entities\EntityNameDTO;
+use Anteris\Autotask\Generator\Support\ValueObjects\EntityName;
 use Anteris\Autotask\Generator\Writers\CacheWriter;
-use Anteris\Autotask\Generator\Writers\FileWriter;
 use Anteris\Autotask\Generator\Writers\TemplateWriter;
 use Exception;
 use GuzzleHttp\Client as HttpClient;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-/**
- * This class is the parent generator for everything else.
- * 
- * @author Aidan Casey <aidan.casey@anteris.com>
- * @since  v0.1.0
- */
 class Generator
 {
-    /** @var bool Whether or not the cache should be saved for next run. */
     protected bool $cache;
 
-    /** @var FileWriter Handles the writing of cached responses. */
     protected CacheWriter $cacheWriter;
 
-    /** @var array Keeps track of new classes and returns an existing version if found. */
-    protected $classCache = [];
+    protected array $classCache = [];
 
-    /** @var HttpClient An HTTP client for gathering information about the resource. */
-    protected $client;
+    protected HttpClient $client;
 
-    /** @var TemplateWriter Handles the actual writing of class files. */
     protected TemplateWriter $templateWriter;
 
-    /** @var Environment An instance of Twig Templating Engine. */
-    protected $twig;
+    protected Environment $twig;
 
-    /**
-     * Sets up the generator to start creating stuff.
-     * 
-     * @param  string  $username        The API user's username.
-     * @param  string  $secret          The API user's token.
-     * @param  string  $outputDirectory The API URL to be used for requests.
-     * @param  bool    $overwrite       Whether or not to overwrite existing files.
-     * @param  bool    $cache           Whether or not to cache the responses permanently.
-     *
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function __construct(
         string $username,
         string $secret,
@@ -113,26 +89,16 @@ class Generator
         $this->templateWriter->setOverwrite($overwrite);
     }
 
-    /**
-     * Makes all the client files required by the API.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function makeClient(): void
     {
         $clientGenerator = new ClientGenerator($this->templateWriter->newContext());
         $clientGenerator->make();
     }
 
-    /**
-     * Make the resource files required by the passed entity.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function makeResource(string $entityName)
     {
         $resourceGenerator = new ResourceGenerator($this->templateWriter->newContext());
-        $entityName = EntityNameDTO::fromString($entityName);
+        $entityName = EntityName::fromString($entityName);
 
         $resourceGenerator->make(
             $entityName,
@@ -141,23 +107,13 @@ class Generator
         );
     }
 
-    /**
-     * Makes all the support files (files used across multiple domains) required by the API.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function makeSupport()
     {
         $supportGenerator = new SupportGenerator($this->templateWriter->newContext());
         $supportGenerator->make();
     }
 
-    /**
-     * Retrieves the actions that are allowed by the passed entity.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    public function getEntityInformation(EntityNameDTO $entityName): EntityInformationDTO
+    public function getEntityInformation(EntityName $entityName): EntityInformationDTO
     {
         $key = $entityName->singular . 'EntityInformation';
 
@@ -173,12 +129,7 @@ class Generator
         return $this->cacheWriter->getCached($key);
     }
 
-    /**
-     * Retrieves the fields that belong to the passed entity.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
-    protected function getEntityFields(EntityNameDTO $entityName): EntityFieldCollection
+    protected function getEntityFields(EntityName $entityName): EntityFieldCollection
     {
         $key = md5($entityName->singular . 'Fields');
 
@@ -193,11 +144,6 @@ class Generator
         return $this->cacheWriter->getCached($key);
     }
 
-    /**
-     * Clears the cache if caching is turned off.
-     * 
-     * @author Aidan Casey <aidan.casey@anteris.com>
-     */
     public function __destruct()
     {
         if ($this->cache == false) {
