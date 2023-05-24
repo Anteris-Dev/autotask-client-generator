@@ -22,7 +22,7 @@ class {{ entityName.singular }}QueryBuilder
     /** @var int The maximum number of records to be returned. */
     protected int $records;
 
-    const GET_LIMIT = 1800;
+    private const GET_LIMIT = 1800;
 
     /**
      * Sets up the class to perform a query.
