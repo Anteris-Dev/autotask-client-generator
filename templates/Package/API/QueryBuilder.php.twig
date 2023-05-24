@@ -22,6 +22,8 @@ class {{ entityName.singular }}QueryBuilder
     /** @var int The maximum number of records to be returned. */
     protected int $records;
 
+    private const GET_LIMIT = 1800;
+
     /**
      * Sets up the class to perform a query.
      * 
@@ -42,9 +44,13 @@ class {{ entityName.singular }}QueryBuilder
      */
      public function count(): int
      {
-         $response = $this->client->get("{{ entityName.plural }}/query/count", [
-             'search' => json_encode( $this->toArray() )
-         ]);
+        if (strlen($this->__toString()) >= self::GET_LIMIT) {
+            $response = $this->client->post("{{ entityName.plural }}/query/count", $this->toArray());
+        }else{
+            $response = $this->client->get("{{ entityName.plural }}/query/count", [
+                'search' => json_encode( $this->toArray() )
+            ]);
+        }
 
          $responseArray = json_decode($response->getBody(), true);
 
@@ -84,9 +90,13 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function get(): {{ entityName.singular }}Collection
     {
-        $response = $this->client->get("{{ entityName.plural }}/query", [
-            'search' => json_encode( $this->toArray() )
-        ]);
+        if (strlen($this->__toString()) >= self::GET_LIMIT) {
+            $response = $this->client->post("{{ entityName.plural }}/query", $this->toArray());
+        }else{
+            $response = $this->client->get("{{ entityName.plural }}/query", [
+                'search' => json_encode( $this->toArray() )
+            ]);
+        }
 
         return {{ entityName.singular }}Collection::fromResponse($response);
     }
@@ -96,11 +106,15 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function paginate(): {{ entityName.singular }}Paginator
     {
-        $response = $this->client->get("{{ entityName.plural }}/query", [
-            'search' => json_encode($this->toArray())
-        ]);
-
-        return new {{ entityName.singular }}Paginator($this->client, $response);
+        if (strlen($this->__toString()) >= self::GET_LIMIT) {
+            $response = $this->client->post("{{ entityName.plural }}/query", $this->toArray());
+            return new {{ entityName.singular }}Paginator($this->client, $response, $this->toArray());
+        }else{
+            $response = $this->client->get("{{ entityName.plural }}/query", [
+                'search' => json_encode( $this->toArray() )
+            ]);
+            return new {{ entityName.singular }}Paginator($this->client, $response);
+        }
     }
 
     /**
