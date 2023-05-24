@@ -22,16 +22,12 @@ class {{ entityName.singular }}QueryBuilder
     /** @var int The maximum number of records to be returned. */
     protected int $records;
 
-    /** @var bool Use POST for /query requests. */
-    protected bool $usePostForQuery;
-
     const GET_LIMIT = 1800;
 
     /**
      * Sets up the class to perform a query.
      * 
      * @param  HttpClient  $client  The http client to execute API requests.
-     * @param  bool    $usePostForQuery     Use POST for /query requests.
      * 
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
