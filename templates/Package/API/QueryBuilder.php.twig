@@ -25,6 +25,8 @@ class {{ entityName.singular }}QueryBuilder
     /** @var bool Use POST for /query requests. */
     protected bool $usePostForQuery;
 
+    const GET_LIMIT = 1800;
+
     /**
      * Sets up the class to perform a query.
      * 
@@ -34,12 +36,10 @@ class {{ entityName.singular }}QueryBuilder
      * @author Aidan Casey <aidan.casey@anteris.com>
      */
     public function __construct(
-        HttpClient $client,
-        bool $usePostForQuery = false
+        HttpClient $client
     )
     {
         $this->client = $client;
-        $this->usePostForQuery = $usePostForQuery;
     }
 
     /**
@@ -48,7 +48,7 @@ class {{ entityName.singular }}QueryBuilder
      */
      public function count(): int
      {
-        if($this->usePostForQuery){
+        if (strlen($this->__toString()) >= self::GET_LIMIT) {
             $response = $this->client->post("{{ entityName.plural }}/query/count", $this->toArray());
         }else{
             $response = $this->client->get("{{ entityName.plural }}/query/count", [
@@ -94,7 +94,7 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function get(): {{ entityName.singular }}Collection
     {
-        if($this->usePostForQuery){
+        if (strlen($this->__toString()) >= self::GET_LIMIT) {
             $response = $this->client->post("{{ entityName.plural }}/query", $this->toArray());
         }else{
             $response = $this->client->get("{{ entityName.plural }}/query", [
@@ -110,15 +110,15 @@ class {{ entityName.singular }}QueryBuilder
      */
     public function paginate(): {{ entityName.singular }}Paginator
     {
-        if($this->usePostForQuery){
+        if (strlen($this->__toString()) >= self::GET_LIMIT) {
             $response = $this->client->post("{{ entityName.plural }}/query", $this->toArray());
+            return new {{ entityName.singular }}Paginator($this->client, $response, $this->toArray());
         }else{
             $response = $this->client->get("{{ entityName.plural }}/query", [
                 'search' => json_encode( $this->toArray() )
             ]);
+            return new {{ entityName.singular }}Paginator($this->client, $response);
         }
-
-        return new {{ entityName.singular }}Paginator($this->client, $response, $this->toArray());
     }
 
     /**

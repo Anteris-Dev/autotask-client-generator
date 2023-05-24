@@ -14,9 +14,6 @@ class Client
     /** @var HttpClient A minimal HTTP client to be passed to each service class. */
     protected HttpClient $client;
 
-    /** @var bool Use POST for /query requests. */
-    protected bool $usePostForQuery;
-
     /**
      * Creates a new HTTP client with headers to authenticate with Autotask.
      *
@@ -24,18 +21,15 @@ class Client
      * @param  string  $secret           Autotask API user's password.
      * @param  string  $integrationCode  Autotask API user's integration code.
      * @param  string  $baseUri          Autotask API URL.
-     * @param  bool    $usePostForQuery     Use POST for /query requests.
      */
     public function __construct(
         string $username,
         string $secret,
         string $integrationCode,
-        string $baseUri,
-        bool $usePostForQuery = false
+        string $baseUri
     )
     {
         $this->client = new HttpClient($username, $secret, $integrationCode, $baseUri);
-        $this->usePostForQuery = $usePostForQuery;
     }
 {%~ for service in services|sort ~%}
     /**
@@ -44,7 +38,7 @@ class Client
     public function {{ service.plural|first|lower }}{{ service.plural|slice(1) }}(): {{ service.singular }}Service
     {
         if (! isset($this->classCache['{{ service.plural }}'])) {
-            $this->classCache['{{ service.plural }}'] = new {{ service.singular }}Service($this->client, $this->usePostForQuery);
+            $this->classCache['{{ service.plural }}'] = new {{ service.singular }}Service($this->client);
         }
 
         return $this->classCache['{{ service.plural }}'];
